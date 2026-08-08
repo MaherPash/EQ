@@ -80,6 +80,10 @@ const scientificToggle = typeof document !== 'undefined' ? document.getElementBy
 const scientificPanel = typeof document !== 'undefined' ? document.getElementById('scientificPanel') : null;
 const speechButton = typeof document !== 'undefined' ? document.getElementById('speechButton') : null;
 const soundToggle = typeof document !== 'undefined' ? document.getElementById('soundToggle') : null;
+const appSoundToggle = typeof document !== 'undefined' ? document.getElementById('appSoundToggle') : null;
+const appSoundModes = typeof document !== 'undefined' ? document.getElementById('appSoundModes') : null;
+const soundProfileSelect = typeof document !== 'undefined' ? document.getElementById('soundProfileSelect') : null;
+const speakerToggle = typeof document !== 'undefined' ? document.getElementById('speakerToggle') : null;
 const iosInstallModal = typeof document !== 'undefined' ? document.getElementById('iosInstallModal') : null;
 const closeIosInstallModalButton = typeof document !== 'undefined' ? document.getElementById('closeIosInstallModal') : null;
 const dismissIosInstallModalButton = typeof document !== 'undefined' ? document.getElementById('dismissIosInstallModal') : null;
@@ -120,6 +124,11 @@ const deleteConfirmCancel = typeof document !== 'undefined' ? document.getElemen
 const deleteConfirmOk = typeof document !== 'undefined' ? document.getElementById('deleteConfirmOk') : null;
 const settingsModal = typeof document !== 'undefined' ? document.getElementById('settingsModal') : null;
 const settingsCloseButton = typeof document !== 'undefined' ? document.getElementById('settingsCloseButton') : null;
+// Help & About (self-contained, only opens from Settings)
+const helpAboutButton = typeof document !== 'undefined' ? document.getElementById('helpAboutButton') : null;
+const helpModal = typeof document !== 'undefined' ? document.getElementById('helpModal') : null;
+const helpBackButton = typeof document !== 'undefined' ? document.getElementById('helpBackButton') : null;
+const helpCloseButton = typeof document !== 'undefined' ? document.getElementById('helpCloseButton') : null;
 const currencyFromSelect = typeof document !== 'undefined' ? document.getElementById('currencyFromSelect') : null;
 const currencyToSelect = typeof document !== 'undefined' ? document.getElementById('currencyToSelect') : null;
 const currencyFromAmount = typeof document !== 'undefined' ? document.getElementById('currencyFromAmount') : null;
@@ -252,8 +261,17 @@ const translations = {
     installModalSubtitle: 'Add it to your Home Screen',
     installModalClose: 'Got it',
     settingsSubtitle: 'Customize app language, theme and feedback.',
+    appSoundsLabel: 'App Sounds',
     soundHapticsLabel: 'Button sound & haptics',
     soundHapticsCaption: 'Enable click sounds and vibration',
+    soundProfileLabel: 'Button Sound Profile',
+    profileClassic: 'Classic',
+    profileSoft: 'Soft',
+    profileModern: 'Modern',
+    profileClick: 'Click',
+    profileSilent: 'Silent',
+    speakerLabel: 'Speaker / Voice Reading',
+    speakerCaption: 'When ON, the result is read aloud automatically after pressing = . When OFF, reading is manual via the speaker button only.',
     modeGeneral: 'General Calculator',
     scientificToggle: 'Scientific',
     percentResultLabel: 'Result',
@@ -311,7 +329,75 @@ const translations = {
     deletePermanentBtn: 'Delete',
     doneBtn: 'Done',
     deleteNoteBtn: 'Delete note',
-    restoreBtn: 'Restore'
+    restoreBtn: 'Restore',
+    helpTitle: 'Help & About',
+    helpSubtitle: 'Learn how to use EQ and discover its features.',
+    helpAboutTitle: 'About the App',
+    helpAboutDesc: 'EQ is a smart, all-in-one calculator that combines everyday math, scientific and percentage tools, currency conversion and much more in one simple, easy-to-use app.',
+    helpWhyTitle: 'Why was EQ created?',
+    helpWhyDesc: 'The idea is simple: one calculator instead of many, built for speed, clarity and everyday use.',
+    helpWhyL1: 'Fast everyday calculations',
+    helpWhyL2: 'Scientific tools such as square root, powers and parentheses',
+    helpWhyL3: 'Easy percentage calculations',
+    helpWhyL4: 'Currency conversion and live rates',
+    helpWhyL5: 'Notes and calculation history',
+    helpWhyL6: 'Simple, clear and quick to use',
+    helpWhyL7: 'Works as an installable app (PWA) on different devices',
+    helpSectionsTitle: 'Explaining the App Sections',
+    helpSecGeneralTitle: 'General Calculator',
+    helpSecGeneralDesc: 'The main calculator for everyday operations: add, subtract, multiply and divide.',
+    helpSecGeneralEx: 'Example: 12 + 7 = 19.',
+    helpSecScientificTitle: 'Scientific Tools',
+    helpSecScientificDesc: 'Tap "Scientific" to use the square root, square and parentheses buttons inside the same calculator.',
+    helpSecScientificEx: 'Example: √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Percentage Calculator',
+    helpSecPercentDesc: 'Quickly work out a percentage of an amount without extra steps.',
+    helpSecPercentEx: 'Example: 15% of 200 = 30.',
+    helpSecHistoryTitle: 'History',
+    helpSecHistoryDesc: 'EQ remembers what you calculated in the last 24 hours so you can review or share it.',
+    helpSecNotesTitle: 'Notes',
+    helpSecNotesDesc: 'Save quick notes, organize them in folders, and edit them in a full-screen editor.',
+    helpSecCurrencyTitle: 'Currency Tools',
+    helpSecCurrencyDesc: 'Search currencies, see live rates, convert between currencies, use a custom rate, and keep your favorites.',
+    helpSecSettingsTitle: 'Settings',
+    helpSecSettingsDesc: 'Change the language, the theme and the sound feedback exactly how you like.',
+    helpButtonsTitle: 'How to Use the Calculator',
+    helpBtnNumbers: 'Tap to type digits.',
+    helpBtnAdd: 'Adds the next number.',
+    helpBtnSub: 'Subtracts the next number.',
+    helpBtnMul: 'Multiplies by the next number.',
+    helpBtnDiv: 'Divides by the next number.',
+    helpBtnEquals: 'Shows the result.',
+    helpBtnAc: 'Clears everything and starts fresh.',
+    helpBtnBack: 'Deletes the last digit you typed.',
+    helpBtnDecimal: 'Adds a decimal point.',
+    helpBtnScientific: 'Scientific / Percentage: switches the extra tools on and off.',
+    helpBtnSpeak: 'Speaks the current result aloud.',
+    helpSettingsExplainTitle: 'Settings',
+    helpSetLanguage: 'Language: switches the whole app between the available languages.',
+    helpSetTheme: 'Theme: choose Dark, Light or Violet appearance.',
+    helpSetSoundsTitle: 'App Sounds: the master switch for sound and haptic feedback.',
+    helpSetSoundsDesc: 'When App Sounds is ON, button sound and haptics are allowed. Turn it OFF to silence that feedback, and ON again to allow it.',
+    helpSetSoundsSpeech: 'Speech/TTS is separate from App Sounds and is not turned off by App Sounds.',
+    helpCurrencyTitle: 'Currency Converter',
+    helpCurrencyDesc: 'Pick the currency you have (From) and the one you want (To), then type an amount.',
+    helpCurrencySwap: 'Use the swap button to reverse the two currencies.',
+    helpCurrencyFavorites: 'Use the star to mark a currency as a favorite, and open Favorite Currencies from the currency menu.',
+    helpCurrencyCustomRate: 'Convert at Custom Rate lets you enter your own exchange rate.',
+    helpCurrencyLive: 'Live prices come from the online service; if it is unavailable, cached rates may be used.',
+    helpInstallTitle: 'Install & Offline',
+    helpInstallDesc1: 'You can install EQ as an app on supported devices.',
+    helpInstallDesc2: 'Some features work offline using stored resources, but live currency rates and app updates need an internet connection.',
+    helpBenefitsTitle: 'Why Use EQ?',
+    helpBenefit1: 'All-in-one calculator',
+    helpBenefit2: 'Fast everyday calculations',
+    helpBenefit3: 'Scientific and percentage tools',
+    helpBenefit4: 'Currency conversion',
+    helpBenefit5: 'History and notes',
+    helpBenefit6: 'Multi-language interface',
+    helpBenefit7: 'Responsive design and PWA support',
+    helpLangTitle: 'Languages',
+    helpLangDesc: 'EQ is fully translated. Choose your language in the top bar or in Settings, and the whole app — including this help page — updates instantly.'
   },
   es: {
     eyebrow: '',
@@ -381,8 +467,17 @@ const translations = {
     installModalSubtitle: 'Añádela a tu pantalla de inicio',
     installModalClose: 'Entendido',
     settingsSubtitle: 'Personaliza idioma, tema y comentarios.',
+    appSoundsLabel: 'Sonidos de la app',
     soundHapticsLabel: 'Sonido y hápticos',
     soundHapticsCaption: 'Activar sonidos de clic y vibración',
+    soundProfileLabel: 'Perfil de sonido de botones',
+    profileClassic: 'Clásico',
+    profileSoft: 'Suave',
+    profileModern: 'Moderno',
+    profileClick: 'Clic',
+    profileSilent: 'Silencio',
+    speakerLabel: 'Altavoz / Lectura por voz',
+    speakerCaption: 'Cuando está ACTIVADO, el resultado se lee en voz alta automáticamente al pulsar = . Cuando está APAGADO, la lectura es manual solo con el botón del altavoz.',
     modeGeneral: 'Calculadora general',
     scientificToggle: 'Científica',
     percentResultLabel: 'Resultado',
@@ -439,7 +534,75 @@ const translations = {
     deletePermanentBtn: 'Eliminar',
     doneBtn: 'Hecho',
     deleteNoteBtn: 'Eliminar nota',
-    restoreBtn: 'Restaurar'
+    restoreBtn: 'Restaurar',
+    helpTitle: 'Ayuda y Acerca de',
+    helpSubtitle: 'Aprende a usar EQ y descubre sus funciones.',
+    helpAboutTitle: 'Acerca de la aplicación',
+    helpAboutDesc: 'EQ es una calculadora inteligente y completa que reúne en una sola aplicación sencilla las operaciones diarias, las herramientas científicas y de porcentaje, la conversión de moneda y mucho más.',
+    helpWhyTitle: '¿Por qué se creó EQ?',
+    helpWhyDesc: 'La idea es simple: una sola calculadora en lugar de muchas, pensada para la rapidez, la claridad y el uso diario.',
+    helpWhyL1: 'Cálculos diarios rápidos',
+    helpWhyL2: 'Herramientas científicas como raíz cuadrada, potencias y paréntesis',
+    helpWhyL3: 'Cálculos de porcentaje fáciles',
+    helpWhyL4: 'Conversión de moneda y tasas en vivo',
+    helpWhyL5: 'Notas e historial de cálculos',
+    helpWhyL6: 'Sencilla, clara y rápida de usar',
+    helpWhyL7: 'Funciona como aplicación instalable (PWA) en distintos dispositivos',
+    helpSectionsTitle: 'Explicación de las secciones de la aplicación',
+    helpSecGeneralTitle: 'Calculadora general',
+    helpSecGeneralDesc: 'La calculadora principal para operaciones diarias: sumar, restar, multiplicar y dividir.',
+    helpSecGeneralEx: 'Ejemplo: 12 + 7 = 19.',
+    helpSecScientificTitle: 'Herramientas científicas',
+    helpSecScientificDesc: 'Pulsa "Scientific" para usar los botones de raíz cuadrada, cuadrado y paréntesis en la misma calculadora.',
+    helpSecScientificEx: 'Ejemplo: √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Calculadora de porcentaje',
+    helpSecPercentDesc: 'Calcula rápidamente un porcentaje de una cantidad sin pasos extra.',
+    helpSecPercentEx: 'Ejemplo: 15% de 200 = 30.',
+    helpSecHistoryTitle: 'Historial',
+    helpSecHistoryDesc: 'EQ recuerda lo que calculaste en las últimas 24 horas para que puedas revisarlo o compartirlo.',
+    helpSecNotesTitle: 'Notas',
+    helpSecNotesDesc: 'Guarda notas rápidas, organízalas en carpetas y edítalas en un editor a pantalla completa.',
+    helpSecCurrencyTitle: 'Herramientas de moneda',
+    helpSecCurrencyDesc: 'Busca monedas, consulta tasas en vivo, convierte monedas, usa una tasa personalizada y guarda tus favoritas.',
+    helpSecSettingsTitle: 'Configuración',
+    helpSecSettingsDesc: 'Cambia el idioma, el tema y el sonido a tu gusto.',
+    helpButtonsTitle: 'Cómo usar la calculadora',
+    helpBtnNumbers: 'Pulsa para escribir dígitos.',
+    helpBtnAdd: 'Suma el siguiente número.',
+    helpBtnSub: 'Resta el siguiente número.',
+    helpBtnMul: 'Multiplica por el siguiente número.',
+    helpBtnDiv: 'Divide entre el siguiente número.',
+    helpBtnEquals: 'Muestra el resultado.',
+    helpBtnAc: 'Borra todo y empieza de nuevo.',
+    helpBtnBack: 'Elimina el último dígito escrito.',
+    helpBtnDecimal: 'Añade un punto decimal.',
+    helpBtnScientific: 'Scientific / Percentage: activa o desactiva las herramientas extra.',
+    helpBtnSpeak: 'Lee el resultado actual en voz alta.',
+    helpSettingsExplainTitle: 'Configuración',
+    helpSetLanguage: 'Idioma: cambia toda la aplicación entre los idiomas disponibles.',
+    helpSetTheme: 'Tema: elige la apariencia Oscura, Clara o Violeta.',
+    helpSetSoundsTitle: 'Sonidos de la aplicación: interruptor principal del sonido y vibración.',
+    helpSetSoundsDesc: 'Cuando Sonidos está activado, el sonido de los botones y la vibración están permitidos. Desactívalo para silenciarlos y actívalo de nuevo para permitirlos.',
+    helpSetSoundsSpeech: 'Voz/TTS es independiente de Sonidos y no se desactiva con Sonidos.',
+    helpCurrencyTitle: 'Conversor de moneda',
+    helpCurrencyDesc: 'Elige la moneda que tienes (De) y la que quieres (A), y escribe una cantidad.',
+    helpCurrencySwap: 'Usa el botón de intercambio para invertir las dos monedas.',
+    helpCurrencyFavorites: 'Usa la estrella para marcar una moneda como favorita y abre Favoritos desde el menú de moneda.',
+    helpCurrencyCustomRate: 'Conversión a tasa personalizada te permite introducir tu propio tipo de cambio.',
+    helpCurrencyLive: 'Los precios en vivo vienen del servicio online; si no está disponible, pueden usarse tasas en caché.',
+    helpInstallTitle: 'Instalar y sin conexión',
+    helpInstallDesc1: 'Puedes instalar EQ como aplicación en dispositivos compatibles.',
+    helpInstallDesc2: 'Algunas funciones funcionan sin conexión con recursos guardados, pero las tasas en vivo y las actualizaciones necesitan internet.',
+    helpBenefitsTitle: '¿Por qué usar EQ?',
+    helpBenefit1: 'Calculadora todo en uno',
+    helpBenefit2: 'Cálculos diarios rápidos',
+    helpBenefit3: 'Herramientas científicas y de porcentaje',
+    helpBenefit4: 'Conversión de moneda',
+    helpBenefit5: 'Historial y notas',
+    helpBenefit6: 'Interfaz multilingüe',
+    helpBenefit7: 'Diseño adaptable y soporte PWA',
+    helpLangTitle: 'Idiomas',
+    helpLangDesc: 'EQ está totalmente traducido. Elige tu idioma en la barra superior o en Configuración y toda la aplicación, incluida esta página de ayuda, se actualiza al instante.'
   },
   ar: {
     eyebrow: '',
@@ -509,8 +672,17 @@ const translations = {
     installModalSubtitle: 'أضفه إلى الشاشة الرئيسية',
     installModalClose: 'حسناً',
     settingsSubtitle: 'خصص اللغة والمظهر والتغذية الراجعة.',
+    appSoundsLabel: 'أصوات التطبيق',
     soundHapticsLabel: 'صوت الأزرار والاهتزاز',
     soundHapticsCaption: 'تفعيل أصوات النقر والاهتزاز',
+    soundProfileLabel: 'نمط صوت الأزرار',
+    profileClassic: 'كلاسيكي',
+    profileSoft: 'ناعم',
+    profileModern: 'حديث',
+    profileClick: 'نقرة',
+    profileSilent: 'صامت',
+    speakerLabel: 'السماعة / القراءة الصوتية',
+    speakerCaption: 'عند التشغيل تُقرأ النتيجة تلقائيًا بعد الضغط على =. عند الإيقاف تكون القراءة يدوية من زر السماعة فقط.',
     modeGeneral: 'آلة حاسبة عامة',
     scientificToggle: 'علمية',
     percentResultLabel: 'النتيجة',
@@ -568,7 +740,75 @@ const translations = {
     deletePermanentBtn: 'حذف نهائي',
     doneBtn: 'تم',
     deleteNoteBtn: 'حذف الملاحظة',
-    restoreBtn: 'استعادة'
+    restoreBtn: 'استعادة',
+    helpTitle: 'المساعدة والمعلومات',
+    helpSubtitle: 'تعلّم كيفية استخدام EQ واكتشف مزاياه.',
+    helpAboutTitle: 'عن التطبيق',
+    helpAboutDesc: 'EQ حاسبة ذكية وشاملة تجمع بين الحسابات اليومية والأدوات العلمية وحساب النسبة المئوية وتحويل العملات وكل ذلك في تطبيق واحد سهل الاستخدام.',
+    helpWhyTitle: 'لماذا أُنشئ EQ؟',
+    helpWhyDesc: 'الفكرة بسيطة: حاسبة واحدة بدلًا من عدة حاسبات، مصمّمة للسرعة والوضوح والاستخدام اليومي.',
+    helpWhyL1: 'حسابات يومية سريعة',
+    helpWhyL2: 'أدوات علمية مثل الجذر التربيعي والأُسس والأقواس',
+    helpWhyL3: 'حساب النسبة المئوية بسهولة',
+    helpWhyL4: 'تحويل العملات والأسعار المباشرة',
+    helpWhyL5: 'الملاحظات وسجل الحسابات',
+    helpWhyL6: 'بسيط وواضح وسريع في الاستخدام',
+    helpWhyL7: 'يعمل كتطبيق قابل للتثبيت (PWA) على أجهزة مختلفة',
+    helpSectionsTitle: 'شرح أقسام التطبيق',
+    helpSecGeneralTitle: 'الحاسبة العامة',
+    helpSecGeneralDesc: 'الحاسبة الرئيسية للعمليات اليومية: الجمع والطرح والضرب والقسمة.',
+    helpSecGeneralEx: 'مثال: 12 + 7 = 19.',
+    helpSecScientificTitle: 'الأدوات العلمية',
+    helpSecScientificDesc: 'اضغط على "Scientific" لاستخدام أزرار الجذر التربيعي والتربيع والأقواس داخل الحاسبة نفسها.',
+    helpSecScientificEx: 'مثال: √9 = 3، 2^3 = 8.',
+    helpSecPercentTitle: 'حاسبة النسبة المئوية',
+    helpSecPercentDesc: 'احسب نسبة مئوية من مبلغ معيّن بسرعة ودون خطوات إضافية.',
+    helpSecPercentEx: 'مثال: 15% من 200 = 30.',
+    helpSecHistoryTitle: 'السجل',
+    helpSecHistoryDesc: 'يحفظ EQ ما حاسبته في آخر 24 ساعة لتعيد الاطلاع عليه أو تشاركه.',
+    helpSecNotesTitle: 'الملاحظات',
+    helpSecNotesDesc: 'احفظ ملاحظات سريعة ونظّمها في مجلدات وعدّلها في محرّر بملء الشاشة.',
+    helpSecCurrencyTitle: 'أدوات العملات',
+    helpSecCurrencyDesc: 'ابحث عن العملات واطّلع على الأسعار المباشرة وحوّل بين العملات واستخدم سعرًا مخصصًا واحفظ المفضلة.',
+    helpSecSettingsTitle: 'الإعدادات',
+    helpSecSettingsDesc: 'غيّر اللغة والسمة والتنبيهات الصوتية بالطريقة التي تناسبك.',
+    helpButtonsTitle: 'كيف تستخدم الحاسبة',
+    helpBtnNumbers: 'اضغط لكتابة الأرقام.',
+    helpBtnAdd: 'يضيف الرقم التالي.',
+    helpBtnSub: 'يطرح الرقم التالي.',
+    helpBtnMul: 'يضرب في الرقم التالي.',
+    helpBtnDiv: 'يقسم على الرقم التالي.',
+    helpBtnEquals: 'يعرض النتيجة.',
+    helpBtnAc: 'يمسح كل شيء ويبدأ من جديد.',
+    helpBtnBack: 'يحذف آخر رقم كتبته.',
+    helpBtnDecimal: 'يضيف فاصلة عشرية.',
+    helpBtnScientific: 'Scientific / Percentage: يعمل على تشغيل الأدوات الإضافية أو إيقافها.',
+    helpBtnSpeak: 'يقرأ النتيجة الحالية بصوت مسموع.',
+    helpSettingsExplainTitle: 'الإعدادات',
+    helpSetLanguage: 'اللغة: تغيّر لغة التطبيق بالكامل بين اللغات المتاحة.',
+    helpSetTheme: 'السمة: اختر المظهر الداكن أو الفاتح أو البنفسجي.',
+    helpSetSoundsTitle: 'أصوات التطبيق: المفتاح الرئيسي لأصوات الأزرار والاهتزاز.',
+    helpSetSoundsDesc: 'عند تفعيل أصوات التطبيق تُسمع أصوات الأزرار ويكون الاهتزاز مسموحًا. أوقِفه لكتم ذلك، وأعد تشغيله للسماح به مرة أخرى.',
+    helpSetSoundsSpeech: 'النطق/TTS منفصل عن أصوات التطبيق ولا يتوقف بإيقافها.',
+    helpCurrencyTitle: 'محوّل العملات',
+    helpCurrencyDesc: 'اختر العملة التي لديك (من) والعملة التي تريدها (إلى)، ثم أدخل المبلغ.',
+    helpCurrencySwap: 'استخدم زر التبديل لعكس العملتين.',
+    helpCurrencyFavorites: 'استخدم النجمة لوضع علامة على عملة كمفضلة وافتح "العملات المفضلة" من قائمة العملات.',
+    helpCurrencyCustomRate: 'التحويل بسعر مخصص يسمح لك بإدخال سعر الصرف الخاص بك.',
+    helpCurrencyLive: 'الأسعار المباشرة تأتي من الخدمة عبر الإنترنت؛ وإذا كانت غير متاحة قد تُستخدم الأسعار المخزنة.',
+    helpInstallTitle: 'التثبيت والعمل دون اتصال',
+    helpInstallDesc1: 'يمكنك تثبيت EQ كتطبيق على الأجهزة المدعومة.',
+    helpInstallDesc2: 'بعض الميزات تعمل دون اتصال باستخدام موارد مخزنة، لكن الأسعار المباشرة وتحديثات التطبيق تحتاج إلى اتصال بالإنترنت.',
+    helpBenefitsTitle: 'لماذا تستخدم EQ؟',
+    helpBenefit1: 'حاسبة شاملة للكل',
+    helpBenefit2: 'حسابات يومية سريعة',
+    helpBenefit3: 'أدوات علمية وحساب نسبة مئوية',
+    helpBenefit4: 'تحويل العملات',
+    helpBenefit5: 'السجل والملاحظات',
+    helpBenefit6: 'واجهة متعددة اللغات',
+    helpBenefit7: 'تصميم متجاوب ودعم PWA',
+    helpLangTitle: 'اللغات',
+    helpLangDesc: 'EQ مترجم بالكامل. اختر لغتك من الشريط العلوي أو من الإعدادات، وسيتم تحديث التطبيق بالكامل — بما في ذلك صفحة المساعدة هذه — فورًا.'
   },
   fr: {
     eyebrow: '',
@@ -638,8 +878,17 @@ const translations = {
     installModalSubtitle: 'Ajoutez-le à votre écran d\'accueil',
     installModalClose: 'Compris',
     settingsSubtitle: 'Personnalisez la langue, le thème et les commentaires.',
+    appSoundsLabel: 'Sons de l\'application',
     soundHapticsLabel: 'Son et haptique',
     soundHapticsCaption: 'Activer les sons de clic et les vibrations',
+    soundProfileLabel: 'Profil sonore des boutons',
+    profileClassic: 'Classique',
+    profileSoft: 'Douce',
+    profileModern: 'Moderne',
+    profileClick: 'Clic',
+    profileSilent: 'Silencieux',
+    speakerLabel: 'Haut-parleur / Lecture vocale',
+    speakerCaption: "Lorsqu'il est ACTIVÉ, le résultat est lu à voix haute automatiquement après avoir appuyé sur = . Lorsqu'il est DÉSACTIVÉ, la lecture est manuelle uniquement via le bouton du haut-parleur.",
     modeGeneral: 'Calculatrice générale',
     scientificToggle: 'Scientifique',
     percentResultLabel: 'Résultat',
@@ -696,7 +945,75 @@ const translations = {
     deletePermanentBtn: 'Supprimer',
     doneBtn: 'Terminé',
     deleteNoteBtn: 'Supprimer la note',
-    restoreBtn: 'Restaurer'
+    restoreBtn: 'Restaurer',
+    helpTitle: 'Aide et à propos',
+    helpSubtitle: 'Apprenez à utiliser EQ et découvrez ses fonctionnalités.',
+    helpAboutTitle: 'À propos de l’application',
+    helpAboutDesc: 'EQ est une calculatrice intelligente et complète qui réunit calculs du quotidien, outils scientifiques et de pourcentage, conversion de devises et bien plus dans une seule application simple à utiliser.',
+    helpWhyTitle: 'Pourquoi EQ a-t-il été créé ?',
+    helpWhyDesc: 'L’idée est simple : une seule calculatrice au lieu de plusieurs, pensée pour la rapidité, la clarté et l’usage quotidien.',
+    helpWhyL1: 'Calculs quotidiens rapides',
+    helpWhyL2: 'Outils scientifiques : racine carrée, puissances et parenthèses',
+    helpWhyL3: 'Calculs de pourcentage faciles',
+    helpWhyL4: 'Conversion de devises et taux en direct',
+    helpWhyL5: 'Notes et historique des calculs',
+    helpWhyL6: 'Simple, claire et rapide à utiliser',
+    helpWhyL7: 'Fonctionne comme application installable (PWA) sur différents appareils',
+    helpSectionsTitle: 'Explication des sections de l’application',
+    helpSecGeneralTitle: 'Calculatrice générale',
+    helpSecGeneralDesc: 'La calculatrice principale pour les opérations quotidiennes : additionner, soustraire, multiplier et diviser.',
+    helpSecGeneralEx: 'Exemple : 12 + 7 = 19.',
+    helpSecScientificTitle: 'Outils scientifiques',
+    helpSecScientificDesc: 'Touchez « Scientific » pour utiliser les boutons racine carrée, carré et parenthèses dans la même calculatrice.',
+    helpSecScientificEx: 'Exemple : √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Calculatrice de pourcentage',
+    helpSecPercentDesc: 'Calculez rapidement un pourcentage d’un montant sans étapes supplémentaires.',
+    helpSecPercentEx: 'Exemple : 15 % de 200 = 30.',
+    helpSecHistoryTitle: 'Historique',
+    helpSecHistoryDesc: 'EQ mémorise ce que vous avez calculé au cours des 24 dernières heures pour le revoir ou le partager.',
+    helpSecNotesTitle: 'Notes',
+    helpSecNotesDesc: 'Enregistrez des notes rapides, rangez-les dans des dossiers et modifiez-les dans un éditeur plein écran.',
+    helpSecCurrencyTitle: 'Outils de devises',
+    helpSecCurrencyDesc: 'Recherchez des devises, consultez les taux en direct, convertissez, utilisez un taux personnalisé et gardez vos favoris.',
+    helpSecSettingsTitle: 'Paramètres',
+    helpSecSettingsDesc: 'Modifiez la langue, le thème et les sons selon vos envies.',
+    helpButtonsTitle: 'Comment utiliser la calculatrice',
+    helpBtnNumbers: 'Touchez pour saisir des chiffres.',
+    helpBtnAdd: 'Ajoute le nombre suivant.',
+    helpBtnSub: 'Soustrait le nombre suivant.',
+    helpBtnMul: 'Multiplie par le nombre suivant.',
+    helpBtnDiv: 'Divise par le nombre suivant.',
+    helpBtnEquals: 'Affiche le résultat.',
+    helpBtnAc: 'Efface tout et recommence.',
+    helpBtnBack: 'Supprime le dernier chiffre saisi.',
+    helpBtnDecimal: 'Ajoute une virgule décimale.',
+    helpBtnScientific: 'Scientific / Percentage : active ou désactive les outils supplémentaires.',
+    helpBtnSpeak: 'Lit le résultat actuel à voix haute.',
+    helpSettingsExplainTitle: 'Paramètres',
+    helpSetLanguage: 'Langue : change toute l’application entre les langues disponibles.',
+    helpSetTheme: 'Thème : choisissez l’apparence Sombre, Claire ou Violette.',
+    helpSetSoundsTitle: 'Sons de l’application : interrupteur principal des sons et de la vibration.',
+    helpSetSoundsDesc: 'Lorsque Sons est activé, les sons des boutons et la vibration sont autorisés. Désactivez-le pour les couper et activez-le à nouveau pour les permettre.',
+    helpSetSoundsSpeech: 'La voix/TTS est séparée des Sons et n’est pas désactivée par Sons.',
+    helpCurrencyTitle: 'Convertisseur de devises',
+    helpCurrencyDesc: 'Choisissez la devise que vous avez (De) et celle que vous voulez (À), puis saisissez un montant.',
+    helpCurrencySwap: 'Utilisez le bouton d’échange pour inverser les deux devises.',
+    helpCurrencyFavorites: 'Utilisez l’étoile pour marquer une devise comme favorite et ouvrez Devises favorites depuis le menu devises.',
+    helpCurrencyCustomRate: 'Convertir à taux personnalisé vous permet de saisir votre propre taux de change.',
+    helpCurrencyLive: 'Les prix en direct proviennent du service en ligne ; s’il est indisponible, des taux en cache peuvent être utilisés.',
+    helpInstallTitle: 'Installer et hors ligne',
+    helpInstallDesc1: 'Vous pouvez installer EQ comme application sur les appareils pris en charge.',
+    helpInstallDesc2: 'Certaines fonctionnalités fonctionnent hors ligne avec des ressources stockées, mais les taux en direct et les mises à jour nécessitent une connexion Internet.',
+    helpBenefitsTitle: 'Pourquoi utiliser EQ ?',
+    helpBenefit1: 'Calculatrice tout-en-un',
+    helpBenefit2: 'Calculs quotidiens rapides',
+    helpBenefit3: 'Outils scientifiques et de pourcentage',
+    helpBenefit4: 'Conversion de devises',
+    helpBenefit5: 'Historique et notes',
+    helpBenefit6: 'Interface multilingue',
+    helpBenefit7: 'Design responsive et support PWA',
+    helpLangTitle: 'Langues',
+    helpLangDesc: 'EQ est entièrement traduit. Choisissez votre langue dans la barre supérieure ou dans les Paramètres, et toute l’application — y compris cette page d’aide — se met à jour instantanément.'
   },
   ru: {
     eyebrow: '',
@@ -766,8 +1083,17 @@ const translations = {
     installModalSubtitle: 'Добавьте его на главный экран',
     installModalClose: 'Понятно',
     settingsSubtitle: 'Настройте язык, тему и отзывы.',
+    appSoundsLabel: 'Звуки приложения',
     soundHapticsLabel: 'Звук кнопок и тактильная связь',
     soundHapticsCaption: 'Включить звуки кликов и вибрацию',
+    soundProfileLabel: 'Профиль звука кнопок',
+    profileClassic: 'Классический',
+    profileSoft: 'Мягкий',
+    profileModern: 'Современный',
+    profileClick: 'Щелчок',
+    profileSilent: 'Без звука',
+    speakerLabel: 'Динамик / Озвучивание',
+    speakerCaption: 'Когда ВКЛЮЧЕНО, результат озвучивается автоматически после нажатия = . Когда ВЫКЛЮЧЕНО, чтение только вручную кнопкой динамика.',
     modeGeneral: 'Обычный калькулятор',
     scientificToggle: 'Научный',
     percentResultLabel: 'Результат',
@@ -824,7 +1150,75 @@ const translations = {
     deletePermanentBtn: 'Удалить',
     doneBtn: 'Готово',
     deleteNoteBtn: 'Удалить заметку',
-    restoreBtn: 'Восстановить'
+    restoreBtn: 'Восстановить',
+    helpTitle: 'Справка и о приложении',
+    helpSubtitle: 'Узнайте, как пользоваться EQ и познакомьтесь с его функциями.',
+    helpAboutTitle: 'О приложении',
+    helpAboutDesc: 'EQ — это умный многофункциональный калькулятор, который объединяет повседневные расчёты, научные и процентные инструменты, конвертацию валют и многое другое в одном простом приложении.',
+    helpWhyTitle: 'Зачем был создан EQ?',
+    helpWhyDesc: 'Идея проста: один калькулятор вместо нескольких, созданный для скорости, ясности и повседневного использования.',
+    helpWhyL1: 'Быстрые повседневные расчёты',
+    helpWhyL2: 'Научные инструменты: квадратный корень, степени и скобки',
+    helpWhyL3: 'Лёгкие расчёты процентов',
+    helpWhyL4: 'Конвертация валют и актуальные курсы',
+    helpWhyL5: 'Заметки и история вычислений',
+    helpWhyL6: 'Просто, понятно и быстро в использовании',
+    helpWhyL7: 'Работает как устанавливаемое приложение (PWA) на разных устройствах',
+    helpSectionsTitle: 'Объяснение разделов приложения',
+    helpSecGeneralTitle: 'Обычный калькулятор',
+    helpSecGeneralDesc: 'Основной калькулятор для повседневных операций: сложение, вычитание, умножение и деление.',
+    helpSecGeneralEx: 'Пример: 12 + 7 = 19.',
+    helpSecScientificTitle: 'Научные инструменты',
+    helpSecScientificDesc: 'Нажмите «Scientific», чтобы использовать кнопки квадратного корня, квадрата и скобок в том же калькуляторе.',
+    helpSecScientificEx: 'Пример: √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Калькулятор процентов',
+    helpSecPercentDesc: 'Быстро вычислите процент от суммы без лишних действий.',
+    helpSecPercentEx: 'Пример: 15% от 200 = 30.',
+    helpSecHistoryTitle: 'История',
+    helpSecHistoryDesc: 'EQ запоминает ваши вычисления за последние 24 часа, чтобы вы могли их просмотреть или поделиться ими.',
+    helpSecNotesTitle: 'Заметки',
+    helpSecNotesDesc: 'Сохраняйте быстрые заметки, размещайте их по папкам и редактируйте в полноэкранном редакторе.',
+    helpSecCurrencyTitle: 'Инструменты валют',
+    helpSecCurrencyDesc: 'Ищите валюты, смотрите актуальные курсы, конвертируйте, используйте собственный курс и сохраняйте избранное.',
+    helpSecSettingsTitle: 'Настройки',
+    helpSecSettingsDesc: 'Изменяйте язык, тему и звуковые уведомления по своему вкусу.',
+    helpButtonsTitle: 'Как пользоваться калькулятором',
+    helpBtnNumbers: 'Нажмите, чтобы ввести цифры.',
+    helpBtnAdd: 'Прибавляет следующее число.',
+    helpBtnSub: 'Вычитает следующее число.',
+    helpBtnMul: 'Умножает на следующее число.',
+    helpBtnDiv: 'Делит на следующее число.',
+    helpBtnEquals: 'Показывает результат.',
+    helpBtnAc: 'Очищает всё и начинает заново.',
+    helpBtnBack: 'Удаляет последнюю введённую цифру.',
+    helpBtnDecimal: 'Добавляет десятичную точку.',
+    helpBtnScientific: 'Scientific / Percentage: включает или выключает дополнительные инструменты.',
+    helpBtnSpeak: 'Озвучивает текущий результат.',
+    helpSettingsExplainTitle: 'Настройки',
+    helpSetLanguage: 'Язык: переключает всё приложение между доступными языками.',
+    helpSetTheme: 'Тема: выберите Тёмный, Светлый или Фиолетовый вид.',
+    helpSetSoundsTitle: 'Звуки приложения: главный переключатель звука и вибрации.',
+    helpSetSoundsDesc: 'Когда Звуки включены, звук кнопок и вибрация разрешены. Выключите их, чтобы отключить, и включите снова, чтобы разрешить.',
+    helpSetSoundsSpeech: 'Озвучивание/ТТС отдельно от Звуков и не отключается Звуками.',
+    helpCurrencyTitle: 'Конвертер валют',
+    helpCurrencyDesc: 'Выберите валюту, которая у вас есть (Из), и нужную вам (В), затем введите сумму.',
+    helpCurrencySwap: 'Используйте кнопку обмена, чтобы поменять валюты местами.',
+    helpCurrencyFavorites: 'Используйте звезду, чтобы отметить валюту как избранную, и откройте Избранные валюты из меню валют.',
+    helpCurrencyCustomRate: 'Конвертация по собственному курсу позволяет ввести свой обменный курс.',
+    helpCurrencyLive: 'Актуальные цены поступают из онлайн-сервиса; если он недоступен, могут использоваться сохранённые курсы.',
+    helpInstallTitle: 'Установка и офлайн',
+    helpInstallDesc1: 'Вы можете установить EQ как приложение на поддерживаемых устройствах.',
+    helpInstallDesc2: 'Некоторые функции работают офлайн на сохранённых данных, но актуальные курсы и обновления приложения требуют подключения к интернету.',
+    helpBenefitsTitle: 'Зачем использовать EQ?',
+    helpBenefit1: 'Всё в одном калькуляторе',
+    helpBenefit2: 'Быстрые повседневные расчёты',
+    helpBenefit3: 'Научные и процентные инструменты',
+    helpBenefit4: 'Конвертация валют',
+    helpBenefit5: 'История и заметки',
+    helpBenefit6: 'Многоязычный интерфейс',
+    helpBenefit7: 'Адаптивный дизайн и поддержка PWA',
+    helpLangTitle: 'Языки',
+    helpLangDesc: 'EQ полностью переведён. Выберите язык в верхней панели или в Настройках, и всё приложение — включая эту страницу справки — обновится мгновенно.'
   },
   de: {
     eyebrow: '',
@@ -894,8 +1288,17 @@ const translations = {
     installModalSubtitle: 'Zur Startseite hinzufügen',
     installModalClose: 'Verstanden',
     settingsSubtitle: 'Sprache, Design und Feedback anpassen.',
+    appSoundsLabel: 'App-Sounds',
     soundHapticsLabel: 'Tastenton & Haptik',
     soundHapticsCaption: 'Klickgeräusche und Vibration aktivieren',
+    soundProfileLabel: 'Tastenton-Profil',
+    profileClassic: 'Klassisch',
+    profileSoft: 'Sanft',
+    profileModern: 'Modern',
+    profileClick: 'Klick',
+    profileSilent: 'Stumm',
+    speakerLabel: 'Lautsprecher / Sprachausgabe',
+    speakerCaption: 'Wenn EIN, wird das Ergebnis nach dem Drücken von = automatisch vorgelesen. Wenn AUS, erfolgt das Vorlesen nur manuell über die Lautsprecher-Taste.',
     modeGeneral: 'Allgemeiner Rechner',
     scientificToggle: 'Wissenschaftlich',
     percentResultLabel: 'Ergebnis',
@@ -952,7 +1355,75 @@ const translations = {
     deletePermanentBtn: 'Löschen',
     doneBtn: 'Fertig',
     deleteNoteBtn: 'Notiz löschen',
-    restoreBtn: 'Wiederherstellen'
+    restoreBtn: 'Wiederherstellen',
+    helpTitle: 'Hilfe und Info',
+    helpSubtitle: 'Erfahren Sie, wie Sie EQ nutzen und entdecken Sie seine Funktionen.',
+    helpAboutTitle: 'Über die App',
+    helpAboutDesc: 'EQ ist ein intelligenter All-in-One-Rechner, der Alltagsmathematik, wissenschaftliche und Prozentwerkzeuge, Währungsrechnung und vieles mehr in einer einfachen, benutzerfreundlichen App vereint.',
+    helpWhyTitle: 'Warum wurde EQ entwickelt?',
+    helpWhyDesc: 'Die Idee ist einfach: ein Rechner statt vieler, gemacht für Schnelligkeit, Klarheit und den Alltag.',
+    helpWhyL1: 'Schnelle tägliche Berechnungen',
+    helpWhyL2: 'Wissenschaftliche Werkzeuge wie Quadratwurzel, Potenzen und Klammern',
+    helpWhyL3: 'Einfache Prozentberechnungen',
+    helpWhyL4: 'Währungsrechnung und Live-Kurse',
+    helpWhyL5: 'Notizen und Berechnungsverlauf',
+    helpWhyL6: 'Einfach, klar und schnell zu bedienen',
+    helpWhyL7: 'Funktioniert als installierbare App (PWA) auf verschiedenen Geräten',
+    helpSectionsTitle: 'Erklärung der App-Bereiche',
+    helpSecGeneralTitle: 'Allgemeiner Rechner',
+    helpSecGeneralDesc: 'Der Hauptrechner für den Alltag: Addieren, Subtrahieren, Multiplizieren und Dividieren.',
+    helpSecGeneralEx: 'Beispiel: 12 + 7 = 19.',
+    helpSecScientificTitle: 'Wissenschaftliche Werkzeuge',
+    helpSecScientificDesc: 'Tippen Sie auf „Scientific“, um die Quadratwurzel-, Quadrat- und Klammerntasten im selben Rechner zu nutzen.',
+    helpSecScientificEx: 'Beispiel: √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Prozentrechner',
+    helpSecPercentDesc: 'Berechnen Sie schnell einen Prozentsatz einer Summe ohne Extra-Schritte.',
+    helpSecPercentEx: 'Beispiel: 15 % von 200 = 30.',
+    helpSecHistoryTitle: 'Verlauf',
+    helpSecHistoryDesc: 'EQ merkt sich, was Sie in den letzten 24 Stunden berechnet haben, damit Sie es überprüfen oder teilen können.',
+    helpSecNotesTitle: 'Notizen',
+    helpSecNotesDesc: 'Speichern Sie Schnellnotizen, ordnen Sie sie in Ordnern und bearbeiten Sie sie in einem Vollbild-Editor.',
+    helpSecCurrencyTitle: 'Währungswerkzeuge',
+    helpSecCurrencyDesc: 'Suchen Sie Währungen, sehen Sie Live-Kurse, rechnen Sie um, nutzen Sie einen eigenen Kurs und speichern Sie Favoriten.',
+    helpSecSettingsTitle: 'Einstellungen',
+    helpSecSettingsDesc: 'Ändern Sie Sprache, Design und Klang wie es Ihnen gefällt.',
+    helpButtonsTitle: 'So verwenden Sie den Rechner',
+    helpBtnNumbers: 'Tippen, um Ziffern einzugeben.',
+    helpBtnAdd: 'Addiert die nächste Zahl.',
+    helpBtnSub: 'Subtrahiert die nächste Zahl.',
+    helpBtnMul: 'Multipliziert mit der nächsten Zahl.',
+    helpBtnDiv: 'Dividiert durch die nächste Zahl.',
+    helpBtnEquals: 'Zeigt das Ergebnis.',
+    helpBtnAc: 'Löscht alles und beginnt neu.',
+    helpBtnBack: 'Löscht die letzte eingegebene Ziffer.',
+    helpBtnDecimal: 'Fügt ein Dezimalkomma hinzu.',
+    helpBtnScientific: 'Scientific / Percentage: schaltet die Zusatzwerkzeuge ein und aus.',
+    helpBtnSpeak: 'Spricht das aktuelle Ergebnis vor.',
+    helpSettingsExplainTitle: 'Einstellungen',
+    helpSetLanguage: 'Sprache: wechselt die gesamte App zwischen den verfügbaren Sprachen.',
+    helpSetTheme: 'Design: wählen Sie Dunkel, Hell oder Violett.',
+    helpSetSoundsTitle: 'App-Töne: der Hauptschalter für Ton- und Vibrationsrückmeldung.',
+    helpSetSoundsDesc: 'Wenn App-Töne eingeschaltet ist, sind Tastenton und Vibration erlaubt. Schalten Sie es aus, um diese Rückmeldung zu stummen, und wieder ein, um sie zu erlauben.',
+    helpSetSoundsSpeech: 'Sprache/TTS ist getrennt von App-Tönen und wird von App-Tönen nicht ausgeschaltet.',
+    helpCurrencyTitle: 'Währungsrechner',
+    helpCurrencyDesc: 'Wählen Sie die Währung, die Sie haben (Von), und die gewünschte (Nach), und geben Sie einen Betrag ein.',
+    helpCurrencySwap: 'Nutzen Sie die Tausch-Taste, um die beiden Währungen zu vertauschen.',
+    helpCurrencyFavorites: 'Nutzen Sie den Stern, um eine Währung als Favorit zu markieren, und öffnen Sie Favoriten-Währungen aus dem Währungsmenü.',
+    helpCurrencyCustomRate: 'Mit „Eigener Kurs umrechnen“ können Sie Ihren eigenen Wechselkurs eingeben.',
+    helpCurrencyLive: 'Live-Preise kommen vom Online-Dienst; ist er nicht verfügbar, können zwischengespeicherte Kurse verwendet werden.',
+    helpInstallTitle: 'Installieren und offline',
+    helpInstallDesc1: 'Sie können EQ auf unterstützten Geräten als App installieren.',
+    helpInstallDesc2: 'Einige Funktionen funktionieren offline mit gespeicherten Ressourcen, aber Live-Kurse und App-Updates benötigen eine Internetverbindung.',
+    helpBenefitsTitle: 'Warum EQ verwenden?',
+    helpBenefit1: 'All-in-One-Rechner',
+    helpBenefit2: 'Schnelle tägliche Berechnungen',
+    helpBenefit3: 'Wissenschaftliche und Prozentwerkzeuge',
+    helpBenefit4: 'Währungsrechnung',
+    helpBenefit5: 'Verlauf und Notizen',
+    helpBenefit6: 'Mehrsprachige Oberfläche',
+    helpBenefit7: 'Responsives Design und PWA-Support',
+    helpLangTitle: 'Sprachen',
+    helpLangDesc: 'EQ ist vollständig übersetzt. Wählen Sie Ihre Sprache in der oberen Leiste oder in den Einstellungen, und die gesamte App – einschließlich dieser Hilfeseite – wird sofort aktualisiert.'
   },
   tr: {
     eyebrow: '',
@@ -1022,8 +1493,17 @@ const translations = {
     installModalSubtitle: 'Ana ekranınıza ekleyin',
     installModalClose: 'Anladım',
     settingsSubtitle: 'Dil, tema ve geri bildirimi özelleştirin.',
+    appSoundsLabel: 'Uygulama Sesleri',
     soundHapticsLabel: 'Ses ve dokunsal geri bildirim',
     soundHapticsCaption: 'Tıklama seslerini ve titreşimi etkinleştir',
+    soundProfileLabel: 'Tuş Ses Profili',
+    profileClassic: 'Klasik',
+    profileSoft: 'Yumuşak',
+    profileModern: 'Modern',
+    profileClick: 'Tık',
+    profileSilent: 'Sessiz',
+    speakerLabel: 'Hoparlör / Sesli Okuma',
+    speakerCaption: 'AÇIK olduğunda sonuç = tuşuna bastıktan sonra otomatik olarak sesli okunur. KAPALI olduğunda okuma yalnızca hoparlör düğmesinden manuel yapılır.',
     modeGeneral: 'Genel Hesap Makinesi',
     scientificToggle: 'Bilimsel',
     percentResultLabel: 'Sonuç',
@@ -1080,7 +1560,75 @@ const translations = {
     deletePermanentBtn: 'Sil',
     doneBtn: 'Bitti',
     deleteNoteBtn: 'Notu sil',
-    restoreBtn: 'Geri yükle'
+    restoreBtn: 'Geri yükle',
+    helpTitle: 'Yardım ve Hakkında',
+    helpSubtitle: 'EQ’yu nasıl kullanacağınızı öğrenin ve özelliklerini keşfedin.',
+    helpAboutTitle: 'Uygulama Hakkında',
+    helpAboutDesc: 'EQ, günlük matematiği, bilimsel ve yüzde araçlarını, döviz çevirmeyi ve çok daha fazlasını tek bir basit, kullanımı kolay uygulamada birleştiren akıllı, çok yönlü bir hesap makinesidir.',
+    helpWhyTitle: 'EQ neden oluşturuldu?',
+    helpWhyDesc: 'Fikir basit: birçok hesap makinesi yerine tek bir hesap makinesi; hız, netlik ve günlük kullanım için tasarlanmıştır.',
+    helpWhyL1: 'Hızlı günlük hesaplamalar',
+    helpWhyL2: 'Karekök, üsler ve parantezler gibi bilimsel araçlar',
+    helpWhyL3: 'Kolay yüzde hesaplamaları',
+    helpWhyL4: 'Döviz çevirme ve canlı kurlar',
+    helpWhyL5: 'Notlar ve hesap geçmişi',
+    helpWhyL6: 'Basit, anlaşılır ve hızlı kullanım',
+    helpWhyL7: 'Farklı cihazlarda kurulabilir bir uygulama (PWA) olarak çalışır',
+    helpSectionsTitle: 'Uygulama Bölümlerinin Açıklaması',
+    helpSecGeneralTitle: 'Genel Hesap Makinesi',
+    helpSecGeneralDesc: 'Günlük işlemler için ana hesap makinesi: toplama, çıkarma, çarpma ve bölme.',
+    helpSecGeneralEx: 'Örnek: 12 + 7 = 19.',
+    helpSecScientificTitle: 'Bilimsel Araçlar',
+    helpSecScientificDesc: 'Aynı hesap makinesinde karekök, kare ve parantez düğmelerini kullanmak için “Scientific”e dokunun.',
+    helpSecScientificEx: 'Örnek: √9 = 3, 2^3 = 8.',
+    helpSecPercentTitle: 'Yüzde Hesaplayıcı',
+    helpSecPercentDesc: 'Ekstra adım olmadan bir tutarın yüzdesini hızlıca hesaplayın.',
+    helpSecPercentEx: 'Örnek: 200’ün %15’i = 30.',
+    helpSecHistoryTitle: 'Geçmiş',
+    helpSecHistoryDesc: 'EQ, son 24 saatte hesapladıklarınızı hatırlar, böylece inceleyebilir veya paylaşabilirsiniz.',
+    helpSecNotesTitle: 'Notlar',
+    helpSecNotesDesc: 'Hızlı notlar kaydedin, bunları klasörlerde düzenleyin ve tam ekran düzenleyicide yönetin.',
+    helpSecCurrencyTitle: 'Döviz Araçları',
+    helpSecCurrencyDesc: 'Para birimleri arayın, canlı kurları görün, çevirin, özel kur kullanın ve favorilerinizi saklayın.',
+    helpSecSettingsTitle: 'Ayarlar',
+    helpSecSettingsDesc: 'Dili, temayı ve ses geri bildirimini dilediğiniz gibi değiştirin.',
+    helpButtonsTitle: 'Hesap Makinesi Nasıl Kullanılır',
+    helpBtnNumbers: 'Rakam yazmak için dokunun.',
+    helpBtnAdd: 'Sonraki sayıyı ekler.',
+    helpBtnSub: 'Sonraki sayıyı çıkarır.',
+    helpBtnMul: 'Sonraki sayıyla çarpar.',
+    helpBtnDiv: 'Sonraki sayıya böler.',
+    helpBtnEquals: 'Sonucu gösterir.',
+    helpBtnAc: 'Her şeyi temizler ve sıfırdan başlar.',
+    helpBtnBack: 'Yazdığınız son rakamı siler.',
+    helpBtnDecimal: 'Ondalık ayracı ekler.',
+    helpBtnScientific: 'Scientific / Percentage: ekstra araçları açar veya kapatır.',
+    helpBtnSpeak: 'Geçerli sonucu sesli olarak okur.',
+    helpSettingsExplainTitle: 'Ayarlar',
+    helpSetLanguage: 'Dil: tüm uygulamayı mevcut diller arasında değiştirir.',
+    helpSetTheme: 'Tema: Koyu, Açık veya Mor görünümü seçin.',
+    helpSetSoundsTitle: 'Uygulama Sesleri: ses ve dokunsal geri bildirimin ana anahtarı.',
+    helpSetSoundsDesc: 'Uygulama Sesleri açıkken düğme sesi ve titreşim etkindir. Bunu kapatmak kapatır, tekrar açmak izin verir.',
+    helpSetSoundsSpeech: 'Konuşma/TTS, Uygulama Seslerinden ayrıdır ve Uygulama Sesleri tarafından kapatılmaz.',
+    helpCurrencyTitle: 'Döviz Çevirici',
+    helpCurrencyDesc: 'Sahip olduğunuz para birimini (Gönderen) ve istediğinizi (Alan) seçin, ardından bir tutar girin.',
+    helpCurrencySwap: 'İki para birimini ters çevirmek için değiştirme düğmesini kullanın.',
+    helpCurrencyFavorites: 'Bir para birimini favori olarak işaretlemek için yıldızı kullanın ve döviz menüsünden Favorileri açın.',
+    helpCurrencyCustomRate: 'Özel kur ile çevirme, kendi döviz kurunuzu girmenizi sağlar.',
+    helpCurrencyLive: 'Canlı fiyatlar çevrimiçi hizmetten gelir; hizmet yoksa önbelleğe alınmış kurlar kullanılabilir.',
+    helpInstallTitle: 'Yükleme ve Çevrimdışı',
+    helpInstallDesc1: 'EQ’yu desteklenen cihazlara bir uygulama olarak kurabilirsiniz.',
+    helpInstallDesc2: 'Bazı özellikler depolanan kaynaklarla çevrimdışı çalışır, ancak canlı kurlar ve uygulama güncellemeleri internet bağlantısı gerektirir.',
+    helpBenefitsTitle: 'Neden EQ?',
+    helpBenefit1: 'Hepsi bir arada hesap makinesi',
+    helpBenefit2: 'Hızlı günlük hesaplamalar',
+    helpBenefit3: 'Bilimsel ve yüzde araçları',
+    helpBenefit4: 'Döviz çevirme',
+    helpBenefit5: 'Geçmiş ve notlar',
+    helpBenefit6: 'Çok dilli arayüz',
+    helpBenefit7: 'Duyarlı tasarım ve PWA desteği',
+    helpLangTitle: 'Diller',
+    helpLangDesc: 'EQ tamamen çevrilmiştir. Dilinizi üst çubukta veya Ayarlar’da seçin; bu yardım sayfası dahil tüm uygulama anında güncellenir.'
   }
 };
 
@@ -1104,6 +1652,9 @@ const state = {
   percentPanelOpen: false,
   scientificPanelOpen: false,
   soundEnabled: true,
+  appSoundEnabled: true,
+  soundProfile: 'classic',
+  speakerEnabled: true,
   hasPressedEquals: false,
   displayValue: '0',
   expression: '',
@@ -1140,6 +1691,10 @@ const FOLDERS_KEY = 'eq-note-folders';
 const NOTES_MANAGER_KEY = 'eq-note-manager-notes';
 const LANGUAGE_KEY = 'eq-language';
 const HISTORY_KEY = 'eq-history';
+const APP_SOUND_KEY = 'eq-app-sound';
+const SOUND_MODE_KEY = 'eq-sound-mode';
+const SOUND_PROFILE_KEY = 'eq-sound-profile';
+const SPEAKER_KEY = 'eq-speaker';
 
 // ============================================================
 // UTILITY FUNCTIONS
@@ -1166,11 +1721,101 @@ function showClipboardToast(message) {
 }
 
 function triggerButtonFeedback() {
-  if (!state.soundEnabled) return;
+  // App Sounds master switch must be ON and the individual sound mode must be
+  // enabled for button feedback (click sound + haptics) to fire. Speech/TTS is
+  // completely unaffected by this switch.
+  if (!state.appSoundEnabled || !state.soundEnabled) return;
+  playButtonSound(state.soundProfile);
   try {
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate(10);
     }
+  } catch (e) { /* ignore */ }
+}
+
+// ============================================================
+// APP SOUND PROFILES (Button click sounds)
+// Small, dependency-free Web Audio blips. Each profile just tweaks
+// the waveform, pitch, length and number of steps. 'silent' plays nothing.
+// ============================================================
+const SOUND_PROFILES = {
+  classic: { type: 'square', freq: 620, duration: 0.07, gain: 0.04, steps: 1 },
+  soft: { type: 'sine', freq: 430, duration: 0.12, gain: 0.03, steps: 1 },
+  modern: { type: 'sine', freq: 740, duration: 0.05, gain: 0.035, steps: 2, stepFreq: 80 },
+  click: { type: 'square', freq: 1300, duration: 0.03, gain: 0.02, steps: 1 },
+  silent: null
+};
+
+let buttonAudioContext = null;
+
+function getButtonAudioContext() {
+  try {
+    if (typeof window === 'undefined') return null;
+    if (!buttonAudioContext) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      buttonAudioContext = new AC();
+    }
+    if (buttonAudioContext.state === 'suspended') {
+      buttonAudioContext.resume().catch(() => {});
+    }
+    return buttonAudioContext;
+  } catch (e) { return null; }
+}
+
+function playButtonSound(profile) {
+  const cfg = SOUND_PROFILES[profile] || SOUND_PROFILES.classic;
+  if (!cfg) return; // silent profile
+  const ctx = getButtonAudioContext();
+  if (!ctx) return;
+  try {
+    const steps = cfg.steps || 1;
+    const stepGap = 0.05;
+    for (let i = 0; i < steps; i++) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = cfg.type;
+      osc.frequency.value = cfg.freq + (i * (cfg.stepFreq || 0));
+      const now = ctx.currentTime + (i * stepGap);
+      gain.gain.setValueAtTime(cfg.gain, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + cfg.duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + cfg.duration + 0.02);
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// ============================================================
+// APP SOUND + SPEAKER PREFERENCES (persistence)
+// ============================================================
+function loadSoundPreferences() {
+  try {
+    const appSound = localStorage.getItem(APP_SOUND_KEY);
+    if (appSound !== null) state.appSoundEnabled = appSound === 'true';
+    const soundMode = localStorage.getItem(SOUND_MODE_KEY);
+    if (soundMode !== null) state.soundEnabled = soundMode === 'true';
+    const profile = localStorage.getItem(SOUND_PROFILE_KEY);
+    if (profile && Object.prototype.hasOwnProperty.call(SOUND_PROFILES, profile)) {
+      state.soundProfile = profile;
+    }
+    const speaker = localStorage.getItem(SPEAKER_KEY);
+    if (speaker !== null) state.speakerEnabled = speaker === 'true';
+  } catch (e) { /* ignore */ }
+}
+
+function saveSoundPreferences() {
+  try {
+    localStorage.setItem(APP_SOUND_KEY, String(state.appSoundEnabled));
+    localStorage.setItem(SOUND_MODE_KEY, String(state.soundEnabled));
+    localStorage.setItem(SOUND_PROFILE_KEY, state.soundProfile);
+  } catch (e) { /* ignore */ }
+}
+
+function saveSpeakerPreference() {
+  try {
+    localStorage.setItem(SPEAKER_KEY, String(state.speakerEnabled));
   } catch (e) { /* ignore */ }
 }
 
@@ -3264,7 +3909,16 @@ function openSettingsModal() {
   }
   if (languageSelect) languageSelect.value = state.locale;
   if (topBarLanguageSelect) topBarLanguageSelect.value = state.locale;
-  if (soundToggle) soundToggle.checked = state.soundEnabled;
+  if (appSoundToggle) appSoundToggle.checked = state.appSoundEnabled;
+  if (soundToggle) {
+    soundToggle.checked = state.soundEnabled;
+    soundToggle.disabled = !state.appSoundEnabled;
+  }
+  if (soundProfileSelect) soundProfileSelect.value = state.soundProfile;
+  if (speakerToggle) speakerToggle.checked = state.speakerEnabled;
+  if (appSoundModes) {
+    appSoundModes.closest('.app-sounds-group')?.classList.toggle('app-sounds-off', !state.appSoundEnabled);
+  }
 }
 
 function closeSettingsModal() {
@@ -3273,6 +3927,26 @@ function closeSettingsModal() {
     settingsModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('modal-open');
   }
+}
+
+function openHelpModal() {
+  if (helpModal) {
+    helpModal.classList.add('show');
+    helpModal.setAttribute('aria-hidden', 'false');
+  }
+  // Help opens on top of Settings, so the body must stay locked.
+  document.body.classList.add('modal-open');
+}
+
+function closeHelpModal() {
+  if (helpModal) {
+    helpModal.classList.remove('show');
+    helpModal.setAttribute('aria-hidden', 'true');
+  }
+  // Settings remains open behind the help page -> keep the body locked.
+  const settingsShown = settingsModal && settingsModal.classList.contains('show');
+  if (settingsShown) document.body.classList.add('modal-open');
+  else document.body.classList.remove('modal-open');
 }
 
 function openInstallModal() {
@@ -3552,10 +4226,41 @@ function wireEvents() {
     });
   });
 
-  // Sound toggle
+  // App Sounds master toggle (gates all app sound modes below)
+  if (appSoundToggle) {
+    appSoundToggle.addEventListener('change', (e) => {
+      state.appSoundEnabled = e.target.checked;
+      if (soundToggle) soundToggle.disabled = !e.target.checked;
+      if (appSoundModes) {
+        appSoundModes.closest('.app-sounds-group')?.classList.toggle('app-sounds-off', !e.target.checked);
+      }
+      saveSoundPreferences();
+    });
+  }
+
+  // Sound toggle (per sound mode)
   if (soundToggle) {
     soundToggle.addEventListener('change', (e) => {
       state.soundEnabled = e.target.checked;
+      saveSoundPreferences();
+    });
+  }
+
+  // Sound profile selector (button click sound). Selecting a non-silent profile
+  // plays a short preview. The chosen profile is persisted.
+  if (soundProfileSelect) {
+    soundProfileSelect.addEventListener('change', (e) => {
+      state.soundProfile = e.target.value;
+      saveSoundPreferences();
+      playButtonSound(state.soundProfile);
+    });
+  }
+
+  // Speaker / Voice Reading toggle (auto-read on =). Independent of App Sounds.
+  if (speakerToggle) {
+    speakerToggle.addEventListener('change', (e) => {
+      state.speakerEnabled = e.target.checked;
+      saveSpeakerPreference();
     });
   }
 
@@ -3566,6 +4271,30 @@ function wireEvents() {
   if (settingsModal) {
     settingsModal.addEventListener('click', (e) => {
       if (e.target === settingsModal) closeSettingsModal();
+    });
+  }
+
+  // Help & About (only reachable from Settings)
+  if (helpAboutButton) {
+    helpAboutButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerButtonFeedback();
+      openHelpModal();
+    });
+  }
+  if (helpBackButton) {
+    helpBackButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerButtonFeedback();
+      closeHelpModal();
+    });
+  }
+  if (helpCloseButton) {
+    helpCloseButton.addEventListener('click', closeHelpModal);
+  }
+  if (helpModal) {
+    helpModal.addEventListener('click', (e) => {
+      if (e.target === helpModal) closeHelpModal();
     });
   }
 
@@ -3931,6 +4660,9 @@ function initialize() {
   // Load stored language
   const savedLanguage = getLocaleFromStorage();
   state.locale = savedLanguage;
+
+  // Load persisted App Sounds / Sound Profile / Speaker preferences
+  loadSoundPreferences();
 
   // Set initial language
   if (languageSelect) languageSelect.value = state.locale;

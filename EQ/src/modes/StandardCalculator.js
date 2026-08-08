@@ -166,10 +166,16 @@ class StandardCalculator {
         this.historyEngine.add(historyExpr, result);
       }
 
-      if (this.onSpeak) {
-        this.onSpeak();
-      } else if (this.speech) {
-        this.speech.speak(state.displayValue, this.locale);
+      // Auto-read the result on `=` only when the Speaker / Voice Reading
+      // setting is ON. The manual speaker button (in app.js) always works as
+      // an explicit override regardless of this setting. App Sounds does NOT
+      // control this — Speaker is fully independent.
+      if (state.speakerEnabled) {
+        if (this.onSpeak) {
+          this.onSpeak();
+        } else if (this.speech) {
+          this.speech.speak(state.displayValue, this.locale);
+        }
       }
     } catch (e) {
       // Preserve the monolith error behavior exactly: toast + primary display.

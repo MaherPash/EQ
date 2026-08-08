@@ -346,16 +346,205 @@
               <button class="theme-option" data-theme="violet" data-i18n="themeViolet" type="button">Violet</button>
             </div>
           </div>
-          <label class="field">
-            <span data-i18n="soundHapticsLabel">Button sound & haptics</span>
-            <div class="switch-row">
-              <span class="field-caption" data-i18n="soundHapticsCaption">Enable click sounds and vibration</span>
+          <div class="app-sounds-group">
+            <div class="app-sounds-header">
+              <span class="app-sounds-title" data-i18n="appSoundsLabel">App Sounds</span>
               <label class="switch">
-                <input id="soundToggle" type="checkbox" checked />
+                <input id="appSoundToggle" type="checkbox" checked />
                 <span class="slider"></span>
               </label>
             </div>
-          </label>
+            <div class="app-sounds-modes" id="appSoundModes">
+              <!-- Existing app sound mode(s). Add new mode blocks here to extend the section. -->
+              <label class="field app-sound-mode">
+                <span data-i18n="soundHapticsLabel">Button sound & haptics</span>
+                <div class="switch-row">
+                  <span class="field-caption" data-i18n="soundHapticsCaption">Enable click sounds and vibration</span>
+                  <label class="switch">
+                    <input id="soundToggle" type="checkbox" checked />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </label>
+              <label class="field app-sound-mode">
+                <span data-i18n="soundProfileLabel">Button Sound Profile</span>
+                <select id="soundProfileSelect">
+                  <option value="classic" data-i18n="profileClassic">Classic</option>
+                  <option value="soft" data-i18n="profileSoft">Soft</option>
+                  <option value="modern" data-i18n="profileModern">Modern</option>
+                  <option value="click" data-i18n="profileClick">Click</option>
+                  <option value="silent" data-i18n="profileSilent">Silent</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="app-sounds-group">
+            <div class="app-sounds-header">
+              <span class="app-sounds-title" data-i18n="speakerLabel">Speaker / Voice Reading</span>
+              <label class="switch">
+                <input id="speakerToggle" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="app-sounds-modes">
+              <span class="field-caption speaker-caption" data-i18n="speakerCaption">When ON, the result is read aloud automatically after pressing = . When OFF, reading is manual via the speaker button only.</span>
+            </div>
+          </div>
+
+          <button class="help-about-item" id="helpAboutButton" type="button" aria-haspopup="dialog" aria-label="Help">
+            <span class="help-about-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
+            <span class="help-about-text" data-i18n="helpTitle">Help &amp; About</span>
+            <span class="help-about-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="helpModal" class="help-modal-backdrop" aria-hidden="true">
+      <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+        <header class="help-modal-header">
+          <button id="helpBackButton" class="help-back-btn" type="button" aria-label="Back">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          </button>
+          <div class="help-heading">
+            <h3 id="helpModalTitle" data-i18n="helpTitle">Help &amp; About</h3>
+            <p class="help-modal-subtitle" data-i18n="helpSubtitle">Learn how to use EQ and discover its features.</p>
+          </div>
+          <button id="helpCloseButton" class="modal-close-btn" type="button" aria-label="Close">×</button>
+        </header>
+        <div class="help-modal-body">
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-circle-info help-dot" aria-hidden="true"></i><span data-i18n="helpAboutTitle">About the App</span></h4>
+            <p class="help-card-text" data-i18n="helpAboutDesc">EQ is a smart, all-in-one calculator that combines everyday math, scientific and percentage tools, currency conversion and much more in one simple, easy-to-use app.</p>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-lightbulb help-dot" aria-hidden="true"></i><span data-i18n="helpWhyTitle">Why was EQ created?</span></h4>
+            <p class="help-card-text" data-i18n="helpWhyDesc">The idea is simple: one calculator instead of many, built for speed, clarity and everyday use.</p>
+            <ul class="help-list">
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL1">Fast everyday calculations</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL2">Scientific tools such as square root, powers and parentheses</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL3">Easy percentage calculations</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL4">Currency conversion and live rates</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL5">Notes and calculation history</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL6">Simple, clear and quick to use</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpWhyL7">Works as an installable app (PWA) on different devices</span></li>
+            </ul>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-layer-group help-dot" aria-hidden="true"></i><span data-i18n="helpSectionsTitle">Explaining the App Sections</span></h4>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecGeneralTitle">General Calculator</span>
+              <p class="help-card-text" data-i18n="helpSecGeneralDesc">The main calculator for everyday operations: add, subtract, multiply and divide.</p>
+              <p class="help-example" data-i18n="helpSecGeneralEx">Example: 12 + 7 = 19.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecScientificTitle">Scientific Tools</span>
+              <p class="help-card-text" data-i18n="helpSecScientificDesc">Tap "Scientific" to use the square root, square and parentheses buttons inside the same calculator.</p>
+              <p class="help-example" data-i18n="helpSecScientificEx">Example: √9 = 3, 2^3 = 8.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecPercentTitle">Percentage Calculator</span>
+              <p class="help-card-text" data-i18n="helpSecPercentDesc">Quickly work out a percentage of an amount without extra steps.</p>
+              <p class="help-example" data-i18n="helpSecPercentEx">Example: 15% of 200 = 30.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecHistoryTitle">History</span>
+              <p class="help-card-text" data-i18n="helpSecHistoryDesc">EQ remembers what you calculated in the last 24 hours so you can review or share it.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecNotesTitle">Notes</span>
+              <p class="help-card-text" data-i18n="helpSecNotesDesc">Save quick notes, organize them in folders, and edit them in a full-screen editor.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecCurrencyTitle">Currency Tools</span>
+              <p class="help-card-text" data-i18n="helpSecCurrencyDesc">Search currencies, see live rates, convert between currencies, use a custom rate, and keep your favorites.</p>
+            </div>
+
+            <div class="help-divider"></div>
+
+            <div class="help-subsection">
+              <span class="help-subsection-title" data-i18n="helpSecSettingsTitle">Settings</span>
+              <p class="help-card-text" data-i18n="helpSecSettingsDesc">Change the language, the theme and the sound feedback exactly how you like.</p>
+            </div>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-keyboard help-dot" aria-hidden="true"></i><span data-i18n="helpButtonsTitle">How to Use the Calculator</span></h4>
+            <div class="help-btn-row"><span class="help-btn-key">0–9</span><span data-i18n="helpBtnNumbers">Tap to type digits.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">+</span><span data-i18n="helpBtnAdd">Adds the next number.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">−</span><span data-i18n="helpBtnSub">Subtracts the next number.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">×</span><span data-i18n="helpBtnMul">Multiplies by the next number.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">÷</span><span data-i18n="helpBtnDiv">Divides by the next number.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">=</span><span data-i18n="helpBtnEquals">Shows the result.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">AC</span><span data-i18n="helpBtnAc">Clears everything and starts fresh.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">⌫</span><span data-i18n="helpBtnBack">Deletes the last digit you typed.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">.</span><span data-i18n="helpBtnDecimal">Adds a decimal point.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">Sci</span><span data-i18n="helpBtnScientific">Scientific / Percentage: switches the extra tools on and off.</span></div>
+            <div class="help-btn-row"><span class="help-btn-key">🔊</span><span data-i18n="helpBtnSpeak">Speaks the current result aloud.</span></div>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-sliders help-dot" aria-hidden="true"></i><span data-i18n="helpSettingsExplainTitle">Settings</span></h4>
+            <p class="help-card-text" data-i18n="helpSetLanguage">Language: switches the whole app between the available languages.</p>
+            <p class="help-card-text" data-i18n="helpSetTheme">Theme: choose Dark, Light or Violet appearance.</p>
+            <p class="help-card-text" data-i18n="helpSetSoundsTitle">App Sounds: the master switch for sound and haptic feedback.</p>
+            <p class="help-card-text" data-i18n="helpSetSoundsDesc">When App Sounds is ON, button sound and haptics are allowed. Turn it OFF to silence that feedback, and ON again to allow it.</p>
+            <p class="help-card-text" data-i18n="helpSetSoundsSpeech">Speech/TTS is separate from App Sounds and is not turned off by App Sounds.</p>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-money-bill-transfer help-dot" aria-hidden="true"></i><span data-i18n="helpCurrencyTitle">Currency Converter</span></h4>
+            <p class="help-card-text" data-i18n="helpCurrencyDesc">Pick the currency you have (From) and the one you want (To), then type an amount.</p>
+            <p class="help-card-text" data-i18n="helpCurrencySwap">Use the swap button to reverse the two currencies.</p>
+            <p class="help-card-text" data-i18n="helpCurrencyFavorites">Use the star to mark a currency as a favorite, and open Favorite Currencies from the currency menu.</p>
+            <p class="help-card-text" data-i18n="helpCurrencyCustomRate">Convert at Custom Rate lets you enter your own exchange rate.</p>
+            <p class="help-card-text" data-i18n="helpCurrencyLive">Live prices come from the online service; if it is unavailable, cached rates may be used.</p>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-download help-dot" aria-hidden="true"></i><span data-i18n="helpInstallTitle">Install &amp; Offline</span></h4>
+            <p class="help-card-text" data-i18n="helpInstallDesc1">You can install EQ as an app on supported devices.</p>
+            <p class="help-card-text" data-i18n="helpInstallDesc2">Some features work offline using stored resources, but live currency rates and app updates need an internet connection.</p>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-star help-dot" aria-hidden="true"></i><span data-i18n="helpBenefitsTitle">Why Use EQ?</span></h4>
+            <ul class="help-list">
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit1">All-in-one calculator</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit2">Fast everyday calculations</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit3">Scientific and percentage tools</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit4">Currency conversion</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit5">History and notes</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit6">Multi-language interface</span></li>
+              <li><span class="help-bullet" aria-hidden="true">•</span><span data-i18n="helpBenefit7">Responsive design and PWA support</span></li>
+            </ul>
+          </section>
+
+          <section class="help-card">
+            <h4 class="help-card-title"><i class="fa-solid fa-globe help-dot" aria-hidden="true"></i><span data-i18n="helpLangTitle">Languages</span></h4>
+            <p class="help-card-text" data-i18n="helpLangDesc">EQ is fully translated. Choose your language in the top bar or in Settings, and the whole app — including this help page — updates instantly.</p>
+          </section>
+
         </div>
       </div>
     </div>
