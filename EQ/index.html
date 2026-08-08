@@ -381,28 +381,61 @@
     <div id="notesManagerModal" class="notes-manager-backdrop" aria-hidden="true">
       <div class="notes-manager" role="dialog" aria-modal="true" aria-labelledby="notesManagerTitle">
         <div class="notes-manager-header">
-          <div class="notes-manager-heading">
-            <h3 id="notesManagerTitle" data-i18n="notesManagerTitle">Notes Manager</h3>
-            <p id="notesManagerSubtitle" class="notes-manager-subtitle" data-i18n="notesManagerSubtitle">Organize notes in folders and open a full screen editor.</p>
-          </div>
-          <button id="closeNotesManager" class="modal-close-btn" type="button" aria-label="Close">×</button>
+          <button id="closeNotesManager" class="notes-back-btn icon-btn" type="button" aria-label="Back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <h3 id="notesManagerTitle" data-i18n="notesManagerTitle">Notes</h3>
+          <button id="openNewNoteButton" class="notes-add-btn icon-btn" type="button" aria-label="New Note">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
         </div>
-        <div class="notes-manager-content">
-          <div class="folders-panel">
-            <div class="folder-header">
-              <h4 data-i18n="foldersTitle">Folders</h4>
-              <button id="addFolderButton" class="ghost-btn small" type="button" data-i18n="addFolder">+ Folder</button>
-            </div>
-            <ul id="foldersList" class="folders-list"></ul>
-            <button id="openNewNoteButton" class="accent-btn" type="button" data-i18n="newNoteButton">New Full Screen Note</button>
-          </div>
-          <div class="notes-panel">
-            <div class="folder-header">
-              <h4 data-i18n="notesTitle">Notes</h4>
-              <button id="refreshNotesButton" class="ghost-btn small" type="button" data-i18n="refreshNotes">Refresh</button>
-            </div>
+        <div class="notes-folder-tabs" id="folderTabsContainer">
+          <div class="folder-tabs-scroll" id="folderTabsScroll"></div>
+          <button id="addFolderButton" class="folder-tab-add" type="button" aria-label="New Folder">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="notes-manager-body">
+          <div class="notes-list-panel" id="notesListPanel">
             <ul id="notesList" class="notes-list"></ul>
+            <div id="notesEmptyState" class="notes-empty-state hidden">
+              <div class="notes-empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <p data-i18n="emptyNotesText">No notes yet</p>
+              <button id="emptyNewNoteBtn" class="notes-empty-btn" type="button" data-i18n="emptyNotesAction">+ New Note</button>
+            </div>
           </div>
+          <div class="notes-list-panel hidden" id="deletedListPanel">
+            <ul id="deletedNotesList" class="notes-list"></ul>
+            <div id="deletedEmptyState" class="notes-empty-state hidden">
+              <div class="notes-empty-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </div>
+              <p data-i18n="emptyDeletedText">No deleted notes</p>
+            </div>
+          </div>
+        </div>
+        <nav class="notes-bottom-nav">
+          <button class="notes-nav-btn active" id="navNotesBtn" data-panel="notes" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span data-i18n="notesTitle">Notes</span>
+          </button>
+          <button class="notes-nav-btn" id="navDeletedBtn" data-panel="deleted" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span data-i18n="recentlyDeletedTitle">Recently Deleted</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <div id="deleteConfirmModal" class="delete-confirm-backdrop" aria-hidden="true">
+      <div class="delete-confirm-modal" role="dialog" aria-modal="true">
+        <p class="delete-confirm-title" data-i18n="deleteConfirmTitle">Delete permanently?</p>
+        <p class="delete-confirm-text" data-i18n="deleteConfirmText">This action cannot be undone.</p>
+        <div class="delete-confirm-actions">
+          <button id="deleteConfirmCancel" class="delete-cancel-btn" type="button" data-i18n="cancelBtn">Cancel</button>
+          <button id="deleteConfirmOk" class="delete-ok-btn" type="button" data-i18n="deletePermanentBtn">Delete</button>
         </div>
       </div>
     </div>
@@ -410,22 +443,19 @@
     <div id="fullScreenNoteModal" class="full-screen-note-backdrop" aria-hidden="true">
       <div class="full-screen-note" role="dialog" aria-modal="true" aria-labelledby="fullScreenNoteTitle">
         <div class="full-screen-note-header">
-          <div>
-            <h3 id="fullScreenNoteTitle" data-i18n="fullScreenNoteTitle">Full Screen Note</h3>
-            <p id="fullScreenNoteFolderLabel" class="notes-manager-subtitle" data-i18n="noteFolderLabel">Folder</p>
+          <button id="closeFullScreenNote" class="notes-back-btn icon-btn" type="button" aria-label="Back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div class="full-screen-note-title-wrap">
+            <input id="noteTitleInput" class="note-title-input" type="text" maxlength="80" placeholder="Title" data-i18n-placeholder="noteTitlePlaceholder" />
           </div>
-          <button id="closeFullScreenNote" class="modal-close-btn" type="button" aria-label="Close">×</button>
+          <button id="saveFullScreenNote" class="notes-done-btn" type="button" data-i18n="doneBtn">Done</button>
         </div>
         <div class="full-screen-note-body">
-          <label class="field">
-            <span data-i18n="noteTitleLabel">Title</span>
-            <input id="noteTitleInput" class="note-input" type="text" maxlength="80" placeholder="Note title" data-i18n-placeholder="noteTitlePlaceholder" />
-          </label>
-          <label class="field">
-            <span data-i18n="folderSelectLabel">Folder</span>
-            <select id="noteFolderSelect"></select>
-          </label>
-          <textarea id="noteBodyInput" class="note-body" placeholder="Start writing..." data-i18n-placeholder="noteBodyPlaceholder"></textarea>
+          <textarea id="noteBodyInput" class="note-body-input" placeholder="Start writing..." data-i18n-placeholder="noteBodyPlaceholder"></textarea>
+          <button id="deleteCurrentNote" class="note-delete-float-btn" type="button" aria-label="Delete note" data-i18n="deleteNoteBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
         </div>
       </div>
     </div>

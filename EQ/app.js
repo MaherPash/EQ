@@ -101,6 +101,23 @@ const noteFolderSelect = typeof document !== 'undefined' ? document.getElementBy
 const noteBodyInput = typeof document !== 'undefined' ? document.getElementById('noteBodyInput') : null;
 const drawerCloseButton = typeof document !== 'undefined' ? document.getElementById('drawerCloseButton') : null;
 const drawerMenuItems = typeof document !== 'undefined' ? document.querySelectorAll('.drawer-menu-item') : [];
+
+// Notes UI extras
+const folderTabsScroll = typeof document !== 'undefined' ? document.getElementById('folderTabsScroll') : null;
+const addFolderBtn = typeof document !== 'undefined' ? document.getElementById('addFolderButton') : null;
+const notesListPanel = typeof document !== 'undefined' ? document.getElementById('notesListPanel') : null;
+const deletedListPanel = typeof document !== 'undefined' ? document.getElementById('deletedListPanel') : null;
+const deletedNotesList = typeof document !== 'undefined' ? document.getElementById('deletedNotesList') : null;
+const notesEmptyState = typeof document !== 'undefined' ? document.getElementById('notesEmptyState') : null;
+const deletedEmptyState = typeof document !== 'undefined' ? document.getElementById('deletedEmptyState') : null;
+const emptyNewNoteBtn = typeof document !== 'undefined' ? document.getElementById('emptyNewNoteBtn') : null;
+const navNotesBtn = typeof document !== 'undefined' ? document.getElementById('navNotesBtn') : null;
+const navDeletedBtn = typeof document !== 'undefined' ? document.getElementById('navDeletedBtn') : null;
+const saveFullScreenNote = typeof document !== 'undefined' ? document.getElementById('saveFullScreenNote') : null;
+const deleteCurrentNote = typeof document !== 'undefined' ? document.getElementById('deleteCurrentNote') : null;
+const deleteConfirmModal = typeof document !== 'undefined' ? document.getElementById('deleteConfirmModal') : null;
+const deleteConfirmCancel = typeof document !== 'undefined' ? document.getElementById('deleteConfirmCancel') : null;
+const deleteConfirmOk = typeof document !== 'undefined' ? document.getElementById('deleteConfirmOk') : null;
 const settingsModal = typeof document !== 'undefined' ? document.getElementById('settingsModal') : null;
 const settingsCloseButton = typeof document !== 'undefined' ? document.getElementById('settingsCloseButton') : null;
 const currencyFromSelect = typeof document !== 'undefined' ? document.getElementById('currencyFromSelect') : null;
@@ -283,7 +300,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Search currency or code',
     currencyRatesEmpty: 'No currencies found',
     currencyRatesLoading: 'Loading rates…',
-    currencyRatesError: 'Rates unavailable'
+    currencyRatesError: 'Rates unavailable',
+    recentlyDeletedTitle: 'Recently Deleted',
+    emptyNotesText: 'No notes yet',
+    emptyNotesAction: '+ New Note',
+    emptyDeletedText: 'No deleted notes',
+    deleteConfirmTitle: 'Delete permanently?',
+    deleteConfirmText: 'This action cannot be undone.',
+    cancelBtn: 'Cancel',
+    deletePermanentBtn: 'Delete',
+    doneBtn: 'Done',
+    deleteNoteBtn: 'Delete note',
+    restoreBtn: 'Restore'
   },
   es: {
     eyebrow: '',
@@ -400,7 +428,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Buscar moneda o código',
     currencyRatesEmpty: 'No se encontraron monedas',
     currencyRatesLoading: 'Cargando tipos…',
-    currencyRatesError: 'Tipos no disponibles'
+    currencyRatesError: 'Tipos no disponibles',
+    recentlyDeletedTitle: 'Eliminados recientemente',
+    emptyNotesText: 'No hay notas',
+    emptyNotesAction: '+ Nueva nota',
+    emptyDeletedText: 'No hay notas eliminadas',
+    deleteConfirmTitle: '¿Eliminar permanentemente?',
+    deleteConfirmText: 'Esta acción no se puede deshacer.',
+    cancelBtn: 'Cancelar',
+    deletePermanentBtn: 'Eliminar',
+    doneBtn: 'Hecho',
+    deleteNoteBtn: 'Eliminar nota',
+    restoreBtn: 'Restaurar'
   },
   ar: {
     eyebrow: '',
@@ -518,7 +557,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'ابحث عن عملة أو رمز',
     currencyRatesEmpty: 'لا توجد عملات',
     currencyRatesLoading: 'جارٍ تحميل الأسعار…',
-    currencyRatesError: 'الأسعار غير متاحة'
+    currencyRatesError: 'الأسعار غير متاحة',
+    recentlyDeletedTitle: 'المحذوفة مؤخراً',
+    emptyNotesText: 'لا توجد ملاحظات',
+    emptyNotesAction: '+ ملاحظة جديدة',
+    emptyDeletedText: 'لا توجد ملاحظات محذوفة',
+    deleteConfirmTitle: 'حذف نهائي؟',
+    deleteConfirmText: 'لا يمكن التراجع عن هذا الإجراء.',
+    cancelBtn: 'إلغاء',
+    deletePermanentBtn: 'حذف نهائي',
+    doneBtn: 'تم',
+    deleteNoteBtn: 'حذف الملاحظة',
+    restoreBtn: 'استعادة'
   },
   fr: {
     eyebrow: '',
@@ -635,7 +685,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Rechercher une devise ou un code',
     currencyRatesEmpty: 'Aucune devise trouvée',
     currencyRatesLoading: 'Chargement des taux…',
-    currencyRatesError: 'Taux indisponibles'
+    currencyRatesError: 'Taux indisponibles',
+    recentlyDeletedTitle: 'Récemment supprimé',
+    emptyNotesText: 'Pas de notes',
+    emptyNotesAction: '+ Nouvelle note',
+    emptyDeletedText: 'Aucune note supprimée',
+    deleteConfirmTitle: 'Supprimer définitivement ?',
+    deleteConfirmText: 'Cette action est irréversible.',
+    cancelBtn: 'Annuler',
+    deletePermanentBtn: 'Supprimer',
+    doneBtn: 'Terminé',
+    deleteNoteBtn: 'Supprimer la note',
+    restoreBtn: 'Restaurer'
   },
   ru: {
     eyebrow: '',
@@ -752,7 +813,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Поиск валюты или кода',
     currencyRatesEmpty: 'Валюты не найдены',
     currencyRatesLoading: 'Загрузка курсов…',
-    currencyRatesError: 'Курсы недоступны'
+    currencyRatesError: 'Курсы недоступны',
+    recentlyDeletedTitle: 'Недавно удалённые',
+    emptyNotesText: 'Нет заметок',
+    emptyNotesAction: '+ Новая заметка',
+    emptyDeletedText: 'Нет удалённых заметок',
+    deleteConfirmTitle: 'Удалить навсегда?',
+    deleteConfirmText: 'Это действие нельзя отменить.',
+    cancelBtn: 'Отмена',
+    deletePermanentBtn: 'Удалить',
+    doneBtn: 'Готово',
+    deleteNoteBtn: 'Удалить заметку',
+    restoreBtn: 'Восстановить'
   },
   de: {
     eyebrow: '',
@@ -869,7 +941,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Währung oder Code suchen',
     currencyRatesEmpty: 'Keine Währungen gefunden',
     currencyRatesLoading: 'Kurse werden geladen…',
-    currencyRatesError: 'Kurse nicht verfügbar'
+    currencyRatesError: 'Kurse nicht verfügbar',
+    recentlyDeletedTitle: 'Kürzlich gelöscht',
+    emptyNotesText: 'Keine Notizen',
+    emptyNotesAction: '+ Neue Notiz',
+    emptyDeletedText: 'Keine gelöschten Notizen',
+    deleteConfirmTitle: 'Endgültig löschen?',
+    deleteConfirmText: 'Diese Aktion kann nicht rückgängig gemacht werden.',
+    cancelBtn: 'Abbrechen',
+    deletePermanentBtn: 'Löschen',
+    doneBtn: 'Fertig',
+    deleteNoteBtn: 'Notiz löschen',
+    restoreBtn: 'Wiederherstellen'
   },
   tr: {
     eyebrow: '',
@@ -986,7 +1069,18 @@ const translations = {
     currencyRatesSearchPlaceholder: 'Para birimi veya kod ara',
     currencyRatesEmpty: 'Para birimi bulunamadı',
     currencyRatesLoading: 'Kurlar yükleniyor…',
-    currencyRatesError: 'Kurlar kullanılamıyor'
+    currencyRatesError: 'Kurlar kullanılamıyor',
+    recentlyDeletedTitle: 'Son Silinenler',
+    emptyNotesText: 'Henüz not yok',
+    emptyNotesAction: '+ Yeni not',
+    emptyDeletedText: 'Silinen not yok',
+    deleteConfirmTitle: 'Kalıcı olarak silinsin mi?',
+    deleteConfirmText: 'Bu işlem geri alınamaz.',
+    cancelBtn: 'İptal',
+    deletePermanentBtn: 'Sil',
+    doneBtn: 'Bitti',
+    deleteNoteBtn: 'Notu sil',
+    restoreBtn: 'Geri yükle'
   }
 };
 
@@ -1019,6 +1113,8 @@ const state = {
   historyCountdownTimer: null,
   noteSaveTimer: null,
   currentOpenNote: null,
+  currentNotesView: 'notes', // 'notes' | 'deleted'
+  pendingDeleteNoteId: null,
   isRTL: false,
   rates: null,
   ratesLastUpdated: null,
@@ -1048,7 +1144,7 @@ const HISTORY_KEY = 'eq-history';
 // ============================================================
 // UTILITY FUNCTIONS
 // ============================================================
-function showToast(message) {
+function showToast(message, duration = 1600) {
   if (typeof document === 'undefined') return;
   let toast = document.getElementById('toast');
   if (!toast) {
@@ -1062,7 +1158,11 @@ function showToast(message) {
   clearTimeout(toast._timeout);
   toast._timeout = setTimeout(() => {
     toast.classList.remove('show');
-  }, 1600);
+  }, duration);
+}
+
+function showClipboardToast(message) {
+  showToast(message, 2000);
 }
 
 function triggerButtonFeedback() {
@@ -1259,7 +1359,7 @@ async function copyResult() {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(text);
-      showToast(translations[state.locale].copied || 'Result copied');
+      showClipboardToast(translations[state.locale].copied || 'Result copied');
     } else {
       throw new Error('Clipboard API not available');
     }
@@ -1281,7 +1381,7 @@ async function copyResult() {
     }
     document.body.removeChild(textarea);
     if (success) {
-      showToast(translations[state.locale].copied || 'Result copied');
+      showClipboardToast(translations[state.locale].copied || 'Result copied');
     } else {
       showToast('Copy failed');
     }
@@ -1304,7 +1404,7 @@ async function pasteNumber(userInitiated = false) {
       updatePrimaryDisplay();
       updateSecondaryDisplay();
       syncExpressionDisplay();
-      showToast(translations[state.locale].pasted || 'Number pasted');
+      showClipboardToast(translations[state.locale].pasted || 'Number pasted');
     } else if (userInitiated) {
       showToast('Paste failed');
     }
@@ -1847,36 +1947,7 @@ function getFolderOptions() {
 }
 
 function renderFolders() {
-  if (!foldersList) return;
-  if (!state.folders.length) {
-    foldersList.innerHTML = '';
-    return;
-  }
-  const activeFolder = getActiveFolder();
-  foldersList.innerHTML = state.folders.map(folder => `
-    <li class="folder-item ${folder.id === activeFolder ? 'active' : ''}" data-folder-id="${folder.id}">
-      <span class="folder-name">${escapeHtml(folder.name)}</span>
-      <button class="folder-delete-btn" data-folder-id="${folder.id}" title="Delete">
-        <i class="fa-regular fa-trash-can"></i>
-      </button>
-    </li>
-  `).join('');
-}
-
-function renderNotes() {
-  if (!notesList) return;
-  const notes = getNotesForActiveFolder();
-  const t = translations[state.locale] || translations.en;
-  if (!notes.length) {
-    notesList.innerHTML = `<li class="empty-list">${t.noSelection && translations.en.noSelection ? '' : ''}No notes yet</li>`;
-    return;
-  }
-  notesList.innerHTML = notes.map(note => `
-    <li class="note-item" data-note-id="${note.id}">
-      <span class="note-item-title">${escapeHtml(note.title || 'Untitled')}</span>
-      <span class="note-item-date">${new Date(note.updatedAt || note.createdAt || Date.now()).toLocaleDateString(state.locale)}</span>
-    </li>
-  `).join('');
+  renderFolderTabs();
 }
 
 function openNotesManager() {
@@ -1886,7 +1957,8 @@ function openNotesManager() {
     document.body.classList.add('modal-open');
   }
   loadNoteData();
-  renderFolders();
+  switchNotesView('notes');
+  renderFolderTabs();
   renderNotes();
 }
 
@@ -1954,10 +2026,6 @@ function openFullScreenNote(noteId) {
   state.currentOpenNote = note;
   if (noteTitleInput) noteTitleInput.value = note.title;
   if (noteBodyInput) noteBodyInput.value = note.body;
-  if (noteFolderSelect) {
-    noteFolderSelect.innerHTML = getFolderOptions();
-    noteFolderSelect.value = note.folderId;
-  }
   if (fullScreenNoteModal) {
     fullScreenNoteModal.classList.add('show');
     fullScreenNoteModal.setAttribute('aria-hidden', 'false');
@@ -1980,11 +2048,13 @@ function saveCurrentOpenNote() {
   const note = state.currentOpenNote;
   note.title = noteTitleInput ? noteTitleInput.value.trim() : note.title;
   note.body = noteBodyInput ? noteBodyInput.value : note.body;
-  note.folderId = noteFolderSelect ? noteFolderSelect.value : note.folderId;
+  if (noteFolderSelect) {
+    note.folderId = noteFolderSelect.value;
+  }
   note.updatedAt = Date.now();
   saveNotesData();
   renderNotes();
-  renderFolders();
+  renderFolderTabs();
 }
 
 function scheduleNoteSave() {
@@ -1995,9 +2065,144 @@ function scheduleNoteSave() {
 }
 
 function deleteNote(noteId) {
+  const note = state.noteData.notes.find(n => n.id === noteId);
+  if (note) {
+    note.deletedAt = Date.now();
+    note.originalFolderId = note.folderId;
+    saveNotesData();
+    if (state.currentNotesView === 'deleted') {
+      renderDeletedNotes();
+    } else {
+      renderNotes();
+    }
+  }
+}
+
+function restoreNote(noteId) {
+  const note = state.noteData.notes.find(n => n.id === noteId);
+  if (note) {
+    if (note.originalFolderId) {
+      note.folderId = note.originalFolderId;
+      delete note.originalFolderId;
+    }
+    delete note.deletedAt;
+    saveNotesData();
+    renderDeletedNotes();
+  }
+}
+
+function permanentDeleteNote(noteId) {
+  const wasCurrent = state.currentOpenNote && state.currentOpenNote.id === noteId;
   state.noteData.notes = state.noteData.notes.filter(n => n.id !== noteId);
   saveNotesData();
-  renderNotes();
+  if (wasCurrent) {
+    closeFullScreenNote();
+  }
+  if (state.currentNotesView === 'deleted') {
+    renderDeletedNotes();
+  }
+}
+
+function getActiveNotes() {
+  return state.noteData.notes.filter(n => !n.deletedAt);
+}
+
+function getDeletedNotes() {
+  return state.noteData.notes
+    .filter(n => n.deletedAt)
+    .sort((a, b) => (b.deletedAt || 0) - (a.deletedAt || 0));
+}
+
+function switchNotesView(view) {
+  state.currentNotesView = view;
+  if (navNotesBtn) navNotesBtn.classList.toggle('active', view === 'notes');
+  if (navDeletedBtn) navDeletedBtn.classList.toggle('active', view === 'deleted');
+  if (notesListPanel) notesListPanel.classList.toggle('hidden', view !== 'notes');
+  if (deletedListPanel) deletedListPanel.classList.toggle('hidden', view !== 'deleted');
+  if (view === 'notes') {
+    renderNotes();
+  } else {
+    renderDeletedNotes();
+  }
+}
+
+function renderNotes() {
+  if (!notesList) return;
+  const notes = getActiveNotes().filter(n => n.folderId === getActiveFolder());
+  const t = translations[state.locale] || translations.en;
+  notesList.innerHTML = notes.map(note => {
+    const preview = (note.body || '').slice(0, 80);
+    const dateStr = new Date(note.updatedAt || note.createdAt || Date.now()).toLocaleDateString(state.locale, {
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    return `
+      <li class="note-item" data-note-id="${note.id}">
+        <div class="note-item-main">
+          <span class="note-item-title">${escapeHtml(note.title || t.untitled || 'Untitled')}</span>
+          ${preview ? `<span class="note-item-preview">${escapeHtml(preview)}</span>` : ''}
+          <span class="note-item-meta">${escapeHtml(dateStr)}</span>
+        </div>
+        <div class="note-item-actions">
+          <button class="note-action-btn delete" data-action="delete" data-note-id="${note.id}" aria-label="Delete" title="${t.deleteNoteBtn || 'Delete'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </li>`;
+  }).join('');
+
+  if (notesEmptyState) notesEmptyState.classList.toggle('hidden', notes.length > 0);
+}
+
+function renderDeletedNotes() {
+  if (!deletedNotesList) return;
+  const notes = getDeletedNotes();
+  const t = translations[state.locale] || translations.en;
+  deletedNotesList.innerHTML = notes.map(note => {
+    const dateStr = new Date(note.deletedAt || Date.now()).toLocaleDateString(state.locale, {
+      month: 'short', day: 'numeric'
+    });
+    return `
+      <li class="note-item" data-note-id="${note.id}">
+        <div class="note-item-main">
+          <span class="note-item-title">${escapeHtml(note.title || t.untitled || 'Untitled')}</span>
+          <span class="note-item-meta">${t.deleteConfirmText || 'Deleted'} · ${escapeHtml(dateStr)}</span>
+        </div>
+        <div class="note-item-actions">
+          <button class="note-action-btn restore" data-action="restore" data-note-id="${note.id}" aria-label="Restore" title="${t.restoreBtn || 'Restore'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+          <button class="note-action-btn danger" data-action="permanent-delete" data-note-id="${note.id}" aria-label="Delete permanently" title="${t.deletePermanentBtn || 'Delete'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </li>`;
+  }).join('');
+
+  if (deletedEmptyState) deletedEmptyState.classList.toggle('hidden', notes.length > 0);
+}
+
+function renderFolderTabs() {
+  if (!folderTabsScroll) return;
+  folderTabsScroll.innerHTML = state.folders.map(folder => {
+    const isActive = folder.id === getActiveFolder();
+    return `<button class="folder-tab ${isActive ? 'active' : ''}" data-folder-id="${folder.id}" type="button">${escapeHtml(folder.name)}</button>`;
+  }).join('');
+}
+
+function showDeleteConfirm(noteId) {
+  state.pendingDeleteNoteId = noteId;
+  if (deleteConfirmModal) {
+    deleteConfirmModal.classList.add('show');
+    deleteConfirmModal.setAttribute('aria-hidden', 'false');
+  }
+}
+
+function hideDeleteConfirm() {
+  state.pendingDeleteNoteId = null;
+  if (deleteConfirmModal) {
+    deleteConfirmModal.classList.remove('show');
+    deleteConfirmModal.setAttribute('aria-hidden', 'true');
+  }
 }
 
 function handleNotesListClick(e) {
@@ -3356,21 +3561,84 @@ function wireEvents() {
   if (openNewNoteButton) {
     openNewNoteButton.addEventListener('click', () => {
       closeNotesManager();
-      openFullScreenNote(null);
+      setTimeout(() => openFullScreenNote(null), 250);
     });
   }
-  if (refeshNotesButton) {
-    refeshNotesButton.addEventListener('click', () => {
-      loadNoteData();
-      renderFolders();
+  if (emptyNewNoteBtn) {
+    emptyNewNoteBtn.addEventListener('click', () => {
+      setTimeout(() => openFullScreenNote(null), 150);
+    });
+  }
+  if (navNotesBtn) {
+    navNotesBtn.addEventListener('click', () => switchNotesView('notes'));
+  }
+  if (navDeletedBtn) {
+    navDeletedBtn.addEventListener('click', () => switchNotesView('deleted'));
+  }
+  if (folderTabsScroll) {
+    folderTabsScroll.addEventListener('click', (e) => {
+      const tab = e.target.closest('.folder-tab');
+      if (!tab) return;
+      const folderId = tab.getAttribute('data-folder-id');
+      setActiveFolder(folderId);
+      renderFolderTabs();
       renderNotes();
     });
   }
-  if (foldersList) {
-    foldersList.addEventListener('click', handleFolderClick);
-  }
   if (notesList) {
-    notesList.addEventListener('click', handleNotesListClick);
+    notesList.addEventListener('click', (e) => {
+      const actionBtn = e.target.closest('[data-action="delete"]');
+      if (actionBtn) {
+        e.stopPropagation();
+        const noteId = actionBtn.getAttribute('data-note-id');
+        if (noteId) deleteNote(noteId);
+        return;
+      }
+      const item = e.target.closest('.note-item');
+      if (!item) return;
+      const noteId = item.getAttribute('data-note-id');
+      if (noteId) openFullScreenNote(noteId);
+    });
+  }
+  if (deletedNotesList) {
+    deletedNotesList.addEventListener('click', (e) => {
+      const restoreBtn = e.target.closest('[data-action="restore"]');
+      if (restoreBtn) {
+        e.stopPropagation();
+        const noteId = restoreBtn.getAttribute('data-note-id');
+        if (noteId) restoreNote(noteId);
+        return;
+      }
+      const delBtn = e.target.closest('[data-action="permanent-delete"]');
+      if (delBtn) {
+        e.stopPropagation();
+        const noteId = delBtn.getAttribute('data-note-id');
+        if (noteId) showDeleteConfirm(noteId);
+        return;
+      }
+      const item = e.target.closest('.note-item');
+      if (!item) return;
+      const noteId = item.getAttribute('data-note-id');
+      if (noteId) openFullScreenNote(noteId);
+    });
+  }
+
+  // Delete confirm
+  if (deleteConfirmCancel) {
+    deleteConfirmCancel.addEventListener('click', hideDeleteConfirm);
+  }
+  if (deleteConfirmOk) {
+    deleteConfirmOk.addEventListener('click', () => {
+      if (state.pendingDeleteNoteId) {
+        permanentDeleteNote(state.pendingDeleteNoteId);
+      }
+      hideDeleteConfirm();
+    });
+  }
+  if (deleteConfirmModal) {
+    deleteConfirmModal.addEventListener('click', (e) => {
+      if (e.target === deleteConfirmModal) hideDeleteConfirm();
+    });
   }
 
   // Full screen note
@@ -3388,8 +3656,18 @@ function wireEvents() {
   if (noteBodyInput) {
     noteBodyInput.addEventListener('input', scheduleNoteSave);
   }
-  if (noteFolderSelect) {
-    noteFolderSelect.addEventListener('change', scheduleNoteSave);
+  if (saveFullScreenNote) {
+    saveFullScreenNote.addEventListener('click', () => {
+      saveCurrentOpenNote();
+      closeFullScreenNote();
+    });
+  }
+  if (deleteCurrentNote) {
+    deleteCurrentNote.addEventListener('click', () => {
+      if (state.currentOpenNote) {
+        showDeleteConfirm(state.currentOpenNote.id);
+      }
+    });
   }
 
   // Currency converter
