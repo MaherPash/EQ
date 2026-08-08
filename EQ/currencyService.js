@@ -784,7 +784,23 @@ export function convertCurrency(amount, fromCode, toCode) {
 
   if (!fromRate || !toRate) return 0;
 
-  // Convert: amount * (toRate / fromRate)
+  // Use Decimal.js for precise calculations to eliminate floating-point errors
+  const DecimalCtor = typeof globalThis !== 'undefined' && globalThis.Decimal ? globalThis.Decimal : null;
+  
+  if (DecimalCtor) {
+    try {
+      const amountDec = new DecimalCtor(String(amount));
+      const fromRateDec = new DecimalCtor(String(fromRate));
+      const toRateDec = new DecimalCtor(String(toRate));
+      // result = amount × (toRate / fromRate)
+      const result = amountDec.mul(toRateDec.div(fromRateDec));
+      return result.toNumber();
+    } catch (e) {
+      // Fall through to standard calculation if Decimal fails
+    }
+  }
+
+  // Fallback: standard calculation
   const result = (parseFloat(amount) * toRate) / fromRate;
 
   return result;

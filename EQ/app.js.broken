@@ -60,10 +60,11 @@ const topBarLanguageSelect = typeof document !== 'undefined' ? document.getEleme
 const themeButtons = typeof document !== 'undefined' ? document.querySelectorAll('.theme-option') : [];
 const percentAmount = typeof document !== 'undefined' ? document.getElementById('percentAmount') : null;
 const percentRate = typeof document !== 'undefined' ? document.getElementById('percentRate') : null;
+const percentResult = typeof document !== 'undefined' ? document.getElementById('percentResult') : null;
+const percentWords = typeof document !== 'undefined' ? document.getElementById('percentWords') : null;
 const percentPanel = typeof document !== 'undefined' ? document.getElementById('percentPanel') : null;
 const percentToggle = typeof document !== 'undefined' ? document.getElementById('percentToggle') : null;
 const percentBackButton = typeof document !== 'undefined' ? document.getElementById('percentBackButton') : null;
-const percentRefreshButton = typeof document !== 'undefined' ? document.getElementById('percentRefreshButton') : null;
 const keypadGrid = typeof document !== 'undefined' ? document.querySelector('.keypad-grid') : null;
 const historyList = typeof document !== 'undefined' ? document.getElementById('historyList') : null;
 const noteInput = typeof document !== 'undefined' ? document.getElementById('noteInput') : null;
@@ -116,21 +117,6 @@ const currencyStatusMessage = typeof document !== 'undefined' ? document.getElem
 const refreshRatesButton = typeof document !== 'undefined' ? document.getElementById('refreshRatesButton') : null;
 const currencyDirectoryModal = typeof document !== 'undefined' ? document.getElementById('currencyDirectoryModal') : null;
 const currencyConverterModal = typeof document !== 'undefined' ? document.getElementById('currencyConverterModal') : null;
-// Currency Rates screen elements
-const currencyRatesModal = typeof document !== 'undefined' ? document.getElementById('currencyRatesModal') : null;
-const currencyRatesTitle = typeof document !== 'undefined' ? document.getElementById('currencyRatesTitle') : null;
-const currencyRatesBackButton = typeof document !== 'undefined' ? document.getElementById('currencyRatesBackButton') : null;
-const currencyRatesCloseButton = typeof document !== 'undefined' ? document.getElementById('currencyRatesCloseButton') : null;
-const currencyRatesSearchInput = typeof document !== 'undefined' ? document.getElementById('currencyRatesSearchInput') : null;
-const currencyRatesStatus = typeof document !== 'undefined' ? document.getElementById('currencyRatesStatus') : null;
-const currencyRatesList = typeof document !== 'undefined' ? document.getElementById('currencyRatesList') : null;
-// Currency Favorites screen elements
-const currencyFavoritesModal = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesModal') : null;
-const currencyFavoritesTitle = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesTitle') : null;
-const currencyFavoritesBackButton = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesBackButton') : null;
-const currencyFavoritesStatus = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesStatus') : null;
-const currencyFavoritesEmpty = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesEmpty') : null;
-const currencyFavoritesList = typeof document !== 'undefined' ? document.getElementById('currencyFavoritesList') : null;
 
 // Currency service instance
 let currencyServiceInstance = null;
@@ -149,22 +135,6 @@ const marketRateField = typeof document !== 'undefined' ? document.getElementByI
 const marketRateInput = typeof document !== 'undefined' ? document.getElementById('marketRateInput') : null;
 const marketRatePrefix = typeof document !== 'undefined' ? document.getElementById('marketRatePrefix') : null;
 const marketRateSuffix = typeof document !== 'undefined' ? document.getElementById('marketRateSuffix') : null;
-const converterFromFlag = typeof document !== 'undefined' ? document.getElementById('converterFromFlag') : null;
-const converterFromLabel = typeof document !== 'undefined' ? document.getElementById('converterFromLabel') : null;
-const converterToFlag = typeof document !== 'undefined' ? document.getElementById('converterToFlag') : null;
-const converterToLabel = typeof document !== 'undefined' ? document.getElementById('converterToLabel') : null;
-const currencySpeakButton = typeof document !== 'undefined' ? document.getElementById('currencySpeakButton') : null;
-const currencyResetButton = typeof document !== 'undefined' ? document.getElementById('currencyResetButton') : null;
-
-// Custom-rate converter (تحويل بسعر مخصص) elements
-const customRateModal = typeof document !== 'undefined' ? document.getElementById('customRateModal') : null;
-const customRateBackButton = typeof document !== 'undefined' ? document.getElementById('customRateBackButton') : null;
-const customRateResetButton = typeof document !== 'undefined' ? document.getElementById('customRateResetButton') : null;
-const customRateInput = typeof document !== 'undefined' ? document.getElementById('customRateInput') : null;
-const customAmountInput = typeof document !== 'undefined' ? document.getElementById('customAmountInput') : null;
-const customRateResult = typeof document !== 'undefined' ? document.getElementById('customRateResult') : null;
-const customRateWords = typeof document !== 'undefined' ? document.getElementById('customRateWords') : null;
-const customRateSpeakButton = typeof document !== 'undefined' ? document.getElementById('customRateSpeakButton') : null;
 
 const translations = {
   en: {
@@ -240,9 +210,8 @@ const translations = {
     modeGeneral: 'General Calculator',
     scientificToggle: 'Scientific',
     percentResultLabel: 'Result',
-    currencyConverterTitle: 'Convert Currencies',
+    currencyConverterTitle: 'Direct Currency Converter',
     currencyConverterSubtitle: 'Convert amounts instantly with live rates.',
-    resetButton: 'Reset',
     swapButton: 'Swap',
     favoritesButton: 'Favorites',
     recentButton: 'Recent',
@@ -272,18 +241,7 @@ const translations = {
     currencyOptionSearch: 'Search Currency',
     currencyOptionPrices: 'Live Currency Prices',
     currencyOptionConvert: 'Convert Currencies',
-    currencyOptionFavorites: 'Favorite Currencies',
-    currencyFavoritesTitle: 'Favorites',
-    currencyFavoritesEmpty: 'No favorite currencies yet',
-    currencyFavoritesEmptyHint: 'Tap the star on any currency to add it here',
-    currencyOptionCustomRate: 'Convert at Custom Rate',
-    customRateTitle: 'Convert at Custom Rate',
-    customRateFieldLabel: 'Exchange Rate',
-    currencyRatesTitle: 'Currency Rates',
-    currencyRatesSearchPlaceholder: 'Search currency or code',
-    currencyRatesEmpty: 'No currencies found',
-    currencyRatesLoading: 'Loading rates…',
-    currencyRatesError: 'Rates unavailable'
+    currencyOptionFavorites: 'Favorite Currencies'
   },
   es: {
     eyebrow: '',
@@ -389,18 +347,7 @@ const translations = {
     currencyOptionSearch: 'Buscar moneda',
     currencyOptionPrices: 'Precios de monedas en vivo',
     currencyOptionConvert: 'Convertir monedas',
-    currencyOptionFavorites: 'Monedas favoritas',
-    currencyFavoritesTitle: 'Favoritas',
-    currencyFavoritesEmpty: 'Aún no hay monedas favoritas',
-    currencyFavoritesEmptyHint: 'Toca la estrella de cualquier moneda para añadirla aquí',
-    currencyOptionCustomRate: 'Convertir a tarifa personalizada',
-    customRateTitle: 'Convertir a tarifa personalizada',
-    customRateFieldLabel: 'Tipo de cambio',
-    currencyRatesTitle: 'Tipos de cambio',
-    currencyRatesSearchPlaceholder: 'Buscar moneda o código',
-    currencyRatesEmpty: 'No se encontraron monedas',
-    currencyRatesLoading: 'Cargando tipos…',
-    currencyRatesError: 'Tipos no disponibles'
+    currencyOptionFavorites: 'Monedas favoritas'
   },
   ar: {
     eyebrow: '',
@@ -475,9 +422,8 @@ const translations = {
     modeGeneral: 'آلة حاسبة عامة',
     scientificToggle: 'علمية',
     percentResultLabel: 'النتيجة',
-    currencyConverterTitle: 'تحويل العملات',
+    currencyConverterTitle: 'محول العملات المباشر',
     currencyConverterSubtitle: 'حول المبالغ فوراً بأسعار حية.',
-    resetButton: 'إعادة تعيين',
     swapButton: 'تبديل',
     favoritesButton: 'المفضلة',
     recentButton: 'الأخيرة',
@@ -507,18 +453,7 @@ const translations = {
     currencyOptionSearch: 'البحث عن عملة',
     currencyOptionPrices: 'أسعار العملات المباشرة',
     currencyOptionConvert: 'تحويل العملات',
-    currencyOptionFavorites: 'العملات المفضلة',
-    currencyFavoritesTitle: 'المفضلة',
-    currencyFavoritesEmpty: 'لا توجد عملات مفضلة بعد',
-    currencyFavoritesEmptyHint: 'اضغط على النجمة لأي عملة لإضافتها هنا',
-    currencyOptionCustomRate: 'تحويل بسعر مخصص',
-    customRateTitle: 'تحويل بسعر مخصص',
-    customRateFieldLabel: 'سعر الصرف',
-    currencyRatesTitle: 'أسعار العملات',
-    currencyRatesSearchPlaceholder: 'ابحث عن عملة أو رمز',
-    currencyRatesEmpty: 'لا توجد عملات',
-    currencyRatesLoading: 'جارٍ تحميل الأسعار…',
-    currencyRatesError: 'الأسعار غير متاحة'
+    currencyOptionFavorites: 'العملات المفضلة'
   },
   fr: {
     eyebrow: '',
@@ -624,18 +559,7 @@ const translations = {
     currencyOptionSearch: 'Rechercher une devise',
     currencyOptionPrices: 'Cours des devises en direct',
     currencyOptionConvert: 'Convertir des devises',
-    currencyOptionFavorites: 'Devises favorites',
-    currencyFavoritesTitle: 'Favoris',
-    currencyFavoritesEmpty: 'Aucune devise favorite pour le moment',
-    currencyFavoritesEmptyHint: 'Appuyez sur l\'étoile d\'une devise pour l\'ajouter ici',
-    currencyOptionCustomRate: 'Convertir à un taux personnalisé',
-    customRateTitle: 'Convertir à un taux personnalisé',
-    customRateFieldLabel: 'Taux de change',
-    currencyRatesTitle: 'Taux de change',
-    currencyRatesSearchPlaceholder: 'Rechercher une devise ou un code',
-    currencyRatesEmpty: 'Aucune devise trouvée',
-    currencyRatesLoading: 'Chargement des taux…',
-    currencyRatesError: 'Taux indisponibles'
+    currencyOptionFavorites: 'Devises favorites'
   },
   ru: {
     eyebrow: '',
@@ -741,18 +665,7 @@ const translations = {
     currencyOptionSearch: 'Поиск валюты',
     currencyOptionPrices: 'Живые курсы валют',
     currencyOptionConvert: 'Конвертация валют',
-    currencyOptionFavorites: 'Избранные валюты',
-    currencyFavoritesTitle: 'Избранное',
-    currencyFavoritesEmpty: 'Пока нет избранных валют',
-    currencyFavoritesEmptyHint: 'Нажмите на звезду любой валюты, чтобы добавить её сюда',
-    currencyOptionCustomRate: 'Конвертация по собственному курсу',
-    customRateTitle: 'Конвертация по собственному курсу',
-    customRateFieldLabel: 'Обменный курс',
-    currencyRatesTitle: 'Курсы валют',
-    currencyRatesSearchPlaceholder: 'Поиск валюты или кода',
-    currencyRatesEmpty: 'Валюты не найдены',
-    currencyRatesLoading: 'Загрузка курсов…',
-    currencyRatesError: 'Курсы недоступны'
+    currencyOptionFavorites: 'Избранные валюты'
   },
   de: {
     eyebrow: '',
@@ -858,18 +771,7 @@ const translations = {
     currencyOptionSearch: 'Währung suchen',
     currencyOptionPrices: 'Live-Währungskurse',
     currencyOptionConvert: 'Währungen umrechnen',
-    currencyOptionFavorites: 'Favoriten-Währungen',
-    currencyFavoritesTitle: 'Favoriten',
-    currencyFavoritesEmpty: 'Noch keine Favoriten-Währungen',
-    currencyFavoritesEmptyHint: 'Tippen Sie auf den Stern einer Währung, um sie hier hinzuzufügen',
-    currencyOptionCustomRate: 'Zu benutzerdefiniertem Kurs umrechnen',
-    customRateTitle: 'Zu benutzerdefiniertem Kurs umrechnen',
-    customRateFieldLabel: 'Wechselkurs',
-    currencyRatesTitle: 'Wechselkurse',
-    currencyRatesSearchPlaceholder: 'Währung oder Code suchen',
-    currencyRatesEmpty: 'Keine Währungen gefunden',
-    currencyRatesLoading: 'Kurse werden geladen…',
-    currencyRatesError: 'Kurse nicht verfügbar'
+    currencyOptionFavorites: 'Favoriten-Währungen'
   },
   tr: {
     eyebrow: '',
@@ -962,7 +864,7 @@ const translations = {
     currencyDirectorySubtitle: 'Ülke adına veya para birimi koduna göre kağıt para arayın.',
     currencySearchPlaceholder: 'Ülke veya kod ara',
     drawerEyebrow: '',
-    drawerTitle: 'EQ',
+    drawerTitle: 'EQ'
     drawerHistory: 'Geçmiş',
     drawerNotes: 'Notlar',
     drawerConverter: 'Doğrudan Döviz Çevirici',
@@ -975,18 +877,7 @@ const translations = {
     currencyOptionSearch: 'Para birimi ara',
     currencyOptionPrices: 'Canlı kur fiyatları',
     currencyOptionConvert: 'Para birimi çevir',
-    currencyOptionFavorites: 'Favori para birimleri',
-    currencyFavoritesTitle: 'Favoriler',
-    currencyFavoritesEmpty: 'Henüz favori para birimi yok',
-    currencyFavoritesEmptyHint: 'Herhangi bir para birimindeki yıldıza dokunarak buraya ekleyin',
-    currencyOptionCustomRate: 'Özel kur ile çevir',
-    customRateTitle: 'Özel kur ile çevir',
-    customRateFieldLabel: 'Döviz kuru',
-    currencyRatesTitle: 'Döviz kurları',
-    currencyRatesSearchPlaceholder: 'Para birimi veya kod ara',
-    currencyRatesEmpty: 'Para birimi bulunamadı',
-    currencyRatesLoading: 'Kurlar yükleniyor…',
-    currencyRatesError: 'Kurlar kullanılamıyor'
+    currencyOptionFavorites: 'Favori para birimleri'
   }
 };
 
@@ -1354,14 +1245,6 @@ function setLanguage(locale) {
     updatePercentPanel();
   }
   updateInstallModalContent();
-  // Re-render the currency rates screen so localized currency names update live
-  if (currencyRatesModal && currencyRatesModal.classList.contains('show')) {
-    renderCurrencyRates();
-  }
-  // Re-render the favorites screen so localized names/text update live
-  if (currencyFavoritesModal && currencyFavoritesModal.classList.contains('show')) {
-    renderCurrencyFavorites();
-  }
 }
 
 function updateTexts() {
@@ -1431,16 +1314,14 @@ function updatePercentPanel() {
   const amount = percentAmount ? parseFloat(percentAmount.value) : NaN;
   const rate = percentRate ? parseFloat(percentRate.value) : NaN;
   if (isNaN(amount) || isNaN(rate)) {
-    if (sharedServices.display) {
-      sharedServices.display.updatePrimary('0');
-      sharedServices.display.updateSecondary('Zero', state.locale);
-    }
+    if (percentResult) percentResult.textContent = '0';
+    if (percentWords) percentWords.textContent = '';
     return;
   }
   const result = (amount * rate) / 100;
-  if (sharedServices.display) {
-    sharedServices.display.updatePrimary(result);
-    sharedServices.display.updateSecondary(result, state.locale);
+  if (percentResult) percentResult.textContent = formatNumber(result);
+  if (percentWords) {
+    percentWords.textContent = numberToWords(result.toString(), state.locale);
   }
 }
 
@@ -1459,12 +1340,9 @@ function setPercentPanelOpen(open) {
   }
   if (open) {
     updatePercentPanel();
+    if (keypadGrid) keypadGrid.classList.add('percent-open');
   } else {
-    if (percentAmount) percentAmount.value = '';
-    if (percentRate) percentRate.value = '';
-    if (standardCalculator) {
-      standardCalculator.refreshDisplay();
-    }
+    if (keypadGrid) keypadGrid.classList.remove('percent-open');
   }
 }
 
@@ -2229,33 +2107,8 @@ function formatCleanNumber(value) {
   return formatNumber(cleaned);
 }
 
-// Update the flag + label shown on the From/To currency strips based on the
-// currently selected currency. Arabic shows "flag Localized Name — CODE",
-// other locales show the simpler "flag CODE" (cleaner non-Arabic UI).
-function updateConverterStrips() {
-  if (!currencyServiceInstance) return;
-  const fromCode = currencyFromSelect ? currencyFromSelect.value : '';
-  const toCode = currencyToSelect ? currencyToSelect.value : '';
-  const isArabic = (state.locale || '') === 'ar';
-  const fromCur = fromCode ? currencyServiceInstance.getCurrencyByCode(fromCode) : null;
-  const toCur = toCode ? currencyServiceInstance.getCurrencyByCode(toCode) : null;
-  if (converterFromFlag) converterFromFlag.textContent = fromCur ? fromCur.flag : '';
-  if (converterToFlag) converterToFlag.textContent = toCur ? toCur.flag : '';
-  if (converterFromLabel) {
-    converterFromLabel.textContent = fromCur
-      ? (isArabic ? `${getLocalizedCurrencyName(fromCur)} — ${fromCur.code}` : fromCur.code)
-      : '';
-  }
-  if (converterToLabel) {
-    converterToLabel.textContent = toCur
-      ? (isArabic ? `${getLocalizedCurrencyName(toCur)} — ${toCur.code}` : toCur.code)
-      : '';
-  }
-}
-
 function updateConverterOutput() {
   if (!currencyServiceInstance || !currencyFromSelect || !currencyToSelect || !currencyFromAmount) return;
-  updateConverterStrips();
   const fromCode = currencyFromSelect.value;
   const toCode = currencyToSelect.value;
   const amount = parseFloat(currencyFromAmount.value);
@@ -2296,14 +2149,9 @@ function updateConverterOutput() {
     marketRateField.hidden = state.converterMode !== 'market';
   }
 
-  // Update words display: number written in words followed by the localized
-  // currency name, reusing the existing Number-To-Words system.
+  // Update words display
   if (currencyWords && result !== 0) {
-    const toCur = toCode ? currencyServiceInstance.getCurrencyByCode(toCode) : null;
-    const currencyName = toCur ? getLocalizedCurrencyName(toCur) : '';
-    currencyWords.textContent = currencyName
-      ? `${numberToWords(displayResult, state.locale)} ${currencyName}`
-      : numberToWords(displayResult, state.locale);
+    currencyWords.textContent = numberToWords(displayResult, state.locale);
   } else if (currencyWords) {
     currencyWords.textContent = '';
   }
@@ -2447,270 +2295,6 @@ function closeCurrencyDirectory() {
   }
 }
 
-// ============================================================
-// CURRENCY RATES SCREEN (accessed via Currency Menu -> Search Currency)
-// ============================================================
-// Localized (Arabic) names for the supported ISO codes. English names come
-// straight from CurrencyService; these are only used when the app is Arabic.
-const CURRENCY_NAMES_AR = {
-  AED: 'درهم إماراتي', AFN: 'أفغاني', ALL: 'ليك ألباني', AMD: 'درام أرميني',
-  AOA: 'كوانزا أنغولي', ARS: 'بيزو أرجنتيني', AUD: 'دولار أسترالي',
-  AZN: 'مانات أذربيجاني', BAM: 'مارك بوسني', BBD: 'دولار باربادوسي',
-  BDT: 'تاكا بنغلاديشي', BGN: 'ليف بلغاري', BHD: 'دينار بحريني',
-  BIF: 'فرنك بوروندي', BND: 'دولار بروناي', BOB: 'بوليفيانو بوليفي',
-  BRL: 'ريال برازيلي', BWP: 'بولا بوتسواني', BYN: 'روبل بيلاروسي',
-  CAD: 'دولار كندي', CHF: 'فرنك سويسري', CLP: 'بيزو تشيلي',
-  CNY: 'يوان صيني', COP: 'بيزو كولومبي', CRC: 'كولون كوستاريكي',
-  CZK: 'كورونا تشيكية', DKK: 'كرونة دنماركية', DOP: 'بيزو دومينيكي',
-  DZD: 'دينار جزائري', EGP: 'جنيه مصري', ETB: 'بير إثيوبي', EUR: 'يورو',
-  GBP: 'جنيه إسترليني', GEL: 'لاري جورجي', GHS: 'سيدي غاني',
-  GTQ: 'كتزل غواتيمالي', HKD: 'دولار هونغ كونغ', HNL: 'لمبيرة هندوراسية',
-  HTG: 'جورد هايتي', HUF: 'فورنت مجري', IDR: 'روبية إندونيسية',
-  ILS: 'شيكل إسرائيلي', INR: 'روبية هندية', IQD: 'دينار عراقي',
-  IRR: 'ريال إيراني', ISK: 'كرونة آيسلندية', JMD: 'دولار جامايكي',
-  JOD: 'دينار أردني', JPY: 'ين ياباني', KES: 'شلن كيني',
-  KGS: 'سوم قيرغيزي', KHR: 'ريال كمبودي', KRW: 'وون كوري جنوبي',
-  KWD: 'دينار كويتي', KZT: 'تنغي كازاخستاني', LAK: 'كيب لاوسي',
-  LBP: 'ليرة لبنانية', LKR: 'روبية سريلانكية', MAD: 'درهم مغربي',
-  MGA: 'أرياري مدغشقري', MKD: 'دينار مقدوني', MUR: 'روبية موريشيوسية',
-  MXN: 'بيزو مكسيكي', MYR: 'رينغيت ماليزي', NGN: 'نيرة نيجيرية',
-  NOK: 'كرونة نرويجية', NPR: 'روبية نيبالية', NZD: 'دولار نيوزيلندي',
-  OMR: 'ريال عماني', PAB: 'بالبوا بنمي', PEN: 'سول بيروفي',
-  PHP: 'بيزو فلبيني', PKR: 'روبية باكستانية', PLN: 'زلوتي بولندي',
-  QAR: 'ريال قطري', RON: 'ليو روماني', RSD: 'دينار صربي',
-  RUB: 'روبل روسي', SAR: 'ريال سعودي', SEK: 'كرونة سويدية',
-  SGD: 'دولار سنغافوري', THB: 'بات تايلاندي', TRY: 'ليرة تركية',
-  TTD: 'دولار ترينيداد وتوباغو', TWD: 'دولار تايواني',
-  UAH: 'هريفنا أوكرانية', USD: 'دولار أمريكي', UZS: 'سوم أوزبكي',
-  VND: 'دونغ فيتنامي', ZAR: 'راند جنوب أفريقي', ZMW: 'كواشا زامبي'
-};
-
-function getLocalizedCurrencyName(currency) {
-  if (!currency) return '';
-  if ((state.locale || '') === 'ar') {
-    return CURRENCY_NAMES_AR[currency.code] || currency.name || currency.code;
-  }
-  return currency.name || currency.code;
-}
-
-function getCurrencyRatesBase() {
-  if (currencyServiceInstance && currencyServiceInstance.getState) {
-    return currencyServiceInstance.getState().base || 'USD';
-  }
-  return 'USD';
-}
-
-// Format a rate value with commas and up to 4 decimals (matches service style).
-function formatRatesValue(value) {
-  if (value === null || value === undefined || isNaN(value)) return '0';
-  try {
-    return new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 4
-    }).format(value);
-  } catch (e) {
-    return String(value);
-  }
-}
-
-function currencyRatesRateText(code) {
-  if (!currencyServiceInstance) return '';
-  const base = getCurrencyRatesBase();
-  let rate = 1;
-  try {
-    rate = currencyServiceInstance.getExchangeRate ? currencyServiceInstance.getExchangeRate(code) : null;
-  } catch (e) {
-    rate = null;
-  }
-  if (rate === null || rate === undefined || isNaN(rate)) return '';
-  return `1 ${base} = ${formatRatesValue(rate)} ${code}`;
-}
-
-function setCurrencyRatesStatus(message, type) {
-  if (!currencyRatesStatus) return;
-  currencyRatesStatus.textContent = message || '';
-  currencyRatesStatus.hidden = !message;
-  currencyRatesStatus.className = 'currency-rates-status' + (type ? ' ' + type : '');
-}
-
-function renderCurrencyRates() {
-  if (!currencyRatesList) return;
-  const t = translations[state.locale] || translations.en;
-
-  if (!currencyServiceInstance) {
-    setCurrencyRatesStatus(t.currencyRatesLoading || 'Loading rates…', 'loading');
-    currencyRatesList.innerHTML = '';
-    return;
-  }
-
-  const catalog = currencyServiceInstance.getCatalog();
-  if (!catalog || !catalog.length) {
-    setCurrencyRatesStatus(t.currencyRatesLoading || 'Loading rates…', 'loading');
-    currencyRatesList.innerHTML = '';
-    return;
-  }
-
-  const query = currencyRatesSearchInput ? (currencyRatesSearchInput.value || '').trim().toLowerCase() : '';
-  const results = catalog.filter(c => {
-    if (!query) return true;
-    return (
-      (c.code || '').toLowerCase().includes(query) ||
-      (c.name || '').toLowerCase().includes(query) ||
-      (c.country || '').toLowerCase().includes(query) ||
-      (getLocalizedCurrencyName(c) || '').toLowerCase().includes(query)
-    );
-  });
-
-  setCurrencyRatesStatus('', '');
-
-  if (!results.length) {
-    setCurrencyRatesStatus(t.currencyRatesEmpty || 'No currencies found', 'empty');
-    currencyRatesList.innerHTML = '';
-    return;
-  }
-
-  const serviceErr = currencyServiceInstance.getError ? currencyServiceInstance.getError() : null;
-  const hasRates = currencyServiceInstance.getState() && currencyServiceInstance.getState().rates &&
-    Object.keys(currencyServiceInstance.getState().rates).length > 0;
-
-  currencyRatesList.innerHTML = results.map(c => {
-    const isFav = currencyServiceInstance && currencyServiceInstance.isFavorite ? currencyServiceInstance.isFavorite(c.code) : false;
-    const rateText = currencyRatesRateText(c.code);
-    const priceHtml = rateText
-      ? `<span class="currency-rates-price">${escapeHtml(rateText)}</span>`
-      : `<span class="currency-rates-price muted">—</span>`;
-    const starIcon = isFav ? 'fa-solid fa-star' : 'fa-regular fa-star';
-    return `
-      <li class="currency-rates-item" data-code="${escapeHtml(c.code)}">
-        <span class="currency-rates-flag">${c.flag}</span>
-        <span class="currency-rates-info">
-          <span class="currency-rates-code">${escapeHtml(c.code)}</span>
-          <span class="currency-rates-name">${escapeHtml(getLocalizedCurrencyName(c))}</span>
-        </span>
-        <span class="currency-rates-right">
-          ${priceHtml}
-          <button class="currency-rates-fav${isFav ? ' active' : ''}" data-code="${escapeHtml(c.code)}" type="button" aria-label="Toggle favorite">
-            <i class="${starIcon}"></i>
-          </button>
-        </span>
-      </li>
-    `;
-  }).join('');
-
-  if (serviceErr && !hasRates) {
-    setCurrencyRatesStatus(t.currencyRatesError || 'Rates unavailable', 'error');
-  }
-}
-
-function openCurrencyRates() {
-  closeCurrencyConverter();
-  if (currencyRatesModal) {
-    currencyRatesModal.classList.add('show');
-    currencyRatesModal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-  }
-  if (currencyRatesSearchInput) currencyRatesSearchInput.value = '';
-  renderCurrencyRates();
-  if (currencyRatesSearchInput) {
-    setTimeout(() => currencyRatesSearchInput.focus(), 100);
-  }
-}
-
-function closeCurrencyRates() {
-  if (currencyRatesModal) {
-    currencyRatesModal.classList.remove('show');
-    currencyRatesModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-  }
-}
-
-// ============================================================
-// CURRENCY FAVORITES SCREEN (accessed via Currency Menu -> Favorites)
-// ============================================================
-function setCurrencyFavoritesStatus(message, type) {
-  if (!currencyFavoritesStatus) return;
-  currencyFavoritesStatus.textContent = message || '';
-  currencyFavoritesStatus.hidden = !message;
-  currencyFavoritesStatus.className = 'currency-favorites-status' + (type ? ' ' + type : '');
-}
-
-async function openCurrencyFavorites() {
-  closeCurrencyConverter();
-  if (currencyFavoritesModal) {
-    currencyFavoritesModal.classList.add('show');
-    currencyFavoritesModal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-  }
-  renderCurrencyFavorites();
-  // Fetch the latest live prices automatically when the screen opens.
-  // Rates come exclusively from the existing CurrencyService API (no hardcoded values).
-  if (currencyServiceInstance && typeof currencyServiceInstance.refreshCurrencyData === 'function') {
-    try {
-      await currencyServiceInstance.refreshCurrencyData();
-      state.rates = currencyServiceInstance.getState().rates;
-    } catch (e) {
-      // Keep current/cached rates if the network call fails.
-    }
-    renderCurrencyFavorites();
-  }
-}
-
-function closeCurrencyFavorites() {
-  if (currencyFavoritesModal) {
-    currencyFavoritesModal.classList.remove('show');
-    currencyFavoritesModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-  }
-}
-
-function renderCurrencyFavorites() {
-  if (!currencyFavoritesList) return;
-  const t = translations[state.locale] || translations.en;
-  if (currencyFavoritesEmpty) currencyFavoritesEmpty.hidden = true;
-  setCurrencyFavoritesStatus('', '');
-
-  if (!currencyServiceInstance) {
-    setCurrencyFavoritesStatus(t.currencyRatesLoading || 'Loading favorites…', 'loading');
-    currencyFavoritesList.innerHTML = '';
-    return;
-  }
-
-  const favorites = currencyServiceInstance.getFavorites();
-  if (!favorites.length) {
-    currencyFavoritesList.innerHTML = '';
-    if (currencyFavoritesEmpty) {
-      currencyFavoritesEmpty.hidden = false;
-      const textEl = currencyFavoritesEmpty.querySelector('[data-i18n="currencyFavoritesEmpty"]');
-      if (textEl) textEl.textContent = t.currencyFavoritesEmpty || '';
-      const hintEl = currencyFavoritesEmpty.querySelector('[data-i18n="currencyFavoritesEmptyHint"]');
-      if (hintEl) hintEl.textContent = t.currencyFavoritesEmptyHint || '';
-    }
-    return;
-  }
-
-  currencyFavoritesList.innerHTML = favorites.map(c => {
-    const rateText = currencyRatesRateText(c.code);
-    const priceHtml = rateText
-      ? `<span class="currency-favorites-price">${escapeHtml(rateText)}</span>`
-      : `<span class="currency-favorites-price muted">—</span>`;
-    return `
-      <li class="currency-favorites-item" data-code="${escapeHtml(c.code)}">
-        <span class="currency-favorites-flag">${c.flag}</span>
-        <span class="currency-favorites-info">
-          <span class="currency-favorites-code">${escapeHtml(c.code)}</span>
-          <span class="currency-favorites-name">${escapeHtml(getLocalizedCurrencyName(c))}</span>
-        </span>
-        <span class="currency-favorites-right">
-          ${priceHtml}
-          <button class="currency-favorites-fav" data-code="${escapeHtml(c.code)}" type="button" aria-label="Remove from favorites">
-            <i class="fa-solid fa-star"></i>
-          </button>
-        </span>
-      </li>
-    `;
-  }).join('');
-}
-
 function openCurrencyConverter() {
   if (currencyConverterModal) {
     currencyConverterModal.classList.add('show');
@@ -2735,170 +2319,6 @@ function closeCurrencyConverter() {
 function focusCurrencyConverter() {
   if (currencyFromAmount) {
     setTimeout(() => currencyFromAmount.focus(), 100);
-  }
-}
-
-// Speak the current converted result aloud, reusing the same localized speech
-// behavior as the rest of the app. Tracks speaking state so that a second tap
-// while speaking stops the audio immediately, and a later tap speaks again.
-let currencySpeechActive = false;
-
-function stopCurrencySpeech() {
-  try {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
-  } catch (e) {
-    // no-op
-  }
-  currencySpeechActive = false;
-  if (currencySpeakButton) currencySpeakButton.classList.remove('speaking');
-}
-
-function speakCurrencyResult() {
-  try {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    // Toggle: if currently reading, stop immediately.
-    if (currencySpeechActive) {
-      stopCurrencySpeech();
-      return;
-    }
-    const text = currencyToAmount ? currencyToAmount.textContent : '';
-    if (!text || text === '0' || text === '—') return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = state.locale === 'ar' ? 'ar-SA' : state.locale === 'es' ? 'es-ES' : state.locale === 'fr' ? 'fr-FR' : state.locale === 'ru' ? 'ru-RU' : state.locale === 'de' ? 'de-DE' : state.locale === 'tr' ? 'tr-TR' : 'en-US';
-    utterance.onstart = () => {
-      currencySpeechActive = true;
-      if (currencySpeakButton) currencySpeakButton.classList.add('speaking');
-    };
-    utterance.onend = () => {
-      currencySpeechActive = false;
-      if (currencySpeakButton) currencySpeakButton.classList.remove('speaking');
-    };
-    utterance.onerror = () => {
-      currencySpeechActive = false;
-      if (currencySpeakButton) currencySpeakButton.classList.remove('speaking');
-    };
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  } catch (e) {
-    // Speech synthesis not available
-  }
-}
-
-// Reset the conversion screen to its start state: clear the amount, clear the
-// result, and leave the currency strips ready for a fresh selection. All other
-// converter features (favorites, recent, mode, etc.) remain untouched.
-function resetCurrencyConverter() {
-  if (currencyFromAmount) currencyFromAmount.value = '';
-  updateConverterOutput();
-  if (currencyToAmount) currencyToAmount.textContent = '0';
-  if (conversionRateDisplay) conversionRateDisplay.textContent = '—';
-  if (currencyWords) currencyWords.textContent = '';
-}
-
-// ============================================================
-// CUSTOM-RATE CONVERTER (تحويل بسعر مخصص)
-// A minimal screen: the user enters an exchange rate and an
-// amount; the result is simply  amount × rate  (no API involved).
-// ============================================================
-let customRateSpeechActive = false;
-
-function openCustomRateConverter() {
-  // Make sure other currency screens are not layered underneath.
-  closeCurrencyConverter();
-  closeCurrencyRates();
-  if (customRateModal) {
-    customRateModal.classList.add('show');
-    customRateModal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-  }
-  updateCustomRateResult();
-  if (customRateInput) {
-    setTimeout(() => customRateInput.focus(), 100);
-  }
-}
-
-function closeCustomRateConverter() {
-  stopCustomRateSpeech();
-  if (customRateModal) {
-    customRateModal.classList.remove('show');
-    customRateModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-  }
-}
-
-// Reset the whole screen back to its initial state: stop any speech,
-// clear the rate, the amount, the result and the written-out words.
-function resetCustomRateConverter() {
-  stopCustomRateSpeech();
-  if (customRateInput) customRateInput.value = '';
-  if (customAmountInput) customAmountInput.value = '';
-  if (customRateResult) customRateResult.textContent = '0';
-  if (customRateWords) customRateWords.textContent = '';
-}
-
-// Update the result live as soon as both values are entered: result = amount × rate.
-function updateCustomRateResult() {
-  if (!customRateResult) return;
-  const rate = customRateInput ? parseFloat(customRateInput.value) : NaN;
-  const amount = customAmountInput ? parseFloat(customAmountInput.value) : NaN;
-  if (isNaN(rate) || isNaN(amount)) {
-    customRateResult.textContent = '0';
-    if (customRateWords) customRateWords.textContent = '';
-    return;
-  }
-  const result = new Decimal(String(amount)).mul(rate).toString();
-  customRateResult.textContent = formatNumber(result);
-  if (customRateWords) {
-    customRateWords.textContent = numberToWords(result, state.locale);
-  }
-}
-
-function stopCustomRateSpeech() {
-  try {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-    }
-  } catch (e) {
-    // no-op
-  }
-  customRateSpeechActive = false;
-  if (customRateSpeakButton) customRateSpeakButton.classList.remove('speaking');
-}
-
-// Speak the current result using the same localized Speech system as the
-// rest of the app. No autoplay: it only reads when the user presses the
-// speaker button (once), stops on a second press while reading, and reads
-// again from the start on a later press.
-function speakCustomRateResult() {
-  try {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    // Toggle: if currently reading, stop immediately.
-    if (customRateSpeechActive) {
-      stopCustomRateSpeech();
-      return;
-    }
-    const text = customRateResult ? customRateResult.textContent : '';
-    if (!text || text === '0' || text === '—') return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = state.locale === 'ar' ? 'ar-SA' : state.locale === 'es' ? 'es-ES' : state.locale === 'fr' ? 'fr-FR' : state.locale === 'ru' ? 'ru-RU' : state.locale === 'de' ? 'de-DE' : state.locale === 'tr' ? 'tr-TR' : 'en-US';
-    utterance.onstart = () => {
-      customRateSpeechActive = true;
-      if (customRateSpeakButton) customRateSpeakButton.classList.add('speaking');
-    };
-    utterance.onend = () => {
-      customRateSpeechActive = false;
-      if (customRateSpeakButton) customRateSpeakButton.classList.remove('speaking');
-    };
-    utterance.onerror = () => {
-      customRateSpeechActive = false;
-      if (customRateSpeakButton) customRateSpeakButton.classList.remove('speaking');
-    };
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  } catch (e) {
-    // Speech synthesis not available
   }
 }
 
@@ -2971,8 +2391,8 @@ function handleCurrencyAction(action) {
   closeCurrencyMenu();
   switch (action) {
     case 'search':
-      // Currency Rates screen (أسعار العملات) — the standalone currency rates list
-      openCurrencyRates();
+      // Global Currency Directory & Search (existing search logic)
+      openCurrencyDirectory();
       break;
     case 'prices':
       // Direct Currency Converter displays the live API rates (existing interface)
@@ -2982,13 +2402,12 @@ function handleCurrencyAction(action) {
       // Direct Currency Converter (existing converter, unchanged)
       openCurrencyConverter();
       break;
-    case 'customRate':
-      // Custom-rate converter (تحويل بسعر مخصص) — new minimal screen
-      openCustomRateConverter();
-      break;
     case 'favorites':
-      // Standalone Favorites screen — opens with live rates fetched automatically
-      openCurrencyFavorites();
+      // Open the existing converter then surface the existing favorites list
+      openCurrencyConverter();
+      if (currencyServiceInstance) {
+        setTimeout(() => showFavoritesList(), 60);
+      }
       break;
   }
 }
@@ -3067,7 +2486,7 @@ function handleKeydown(event) {
   } else if (key === '+' || key === '-' || key === '*' || key === '/') {
     applyOperator(key);
   } else if (key === '%') {
-    togglePercentPanel();
+    handlePercent();
   } else if (key === 'Enter' || key === '=') {
     event.preventDefault();
     handleEquals();
@@ -3177,19 +2596,6 @@ function wireEvents() {
   if (percentBackButton) {
     percentBackButton.addEventListener('click', () => {
       setPercentPanelOpen(false);
-    });
-  }
-
-  // Percent refresh button
-  if (percentRefreshButton) {
-    percentRefreshButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      if (percentAmount) percentAmount.value = '';
-      if (percentRate) percentRate.value = '';
-      if (sharedServices.display) {
-        sharedServices.display.updatePrimary('0');
-        sharedServices.display.updateSecondary('Zero', state.locale);
-      }
     });
   }
 
@@ -3400,48 +2806,6 @@ function wireEvents() {
   if (swapCurrenciesButton) {
     swapCurrenciesButton.addEventListener('click', swapCurrencies);
   }
-  if (currencySpeakButton) {
-    currencySpeakButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      speakCurrencyResult();
-    });
-  }
-  if (currencyResetButton) {
-    currencyResetButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      resetCurrencyConverter();
-    });
-  }
-  // Custom-rate converter (تحويل بسعر مخصص)
-  if (customRateBackButton) {
-    customRateBackButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      closeCustomRateConverter();
-    });
-  }
-  if (customRateResetButton) {
-    customRateResetButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      resetCustomRateConverter();
-    });
-  }
-  if (customRateModal) {
-    customRateModal.addEventListener('click', (e) => {
-      if (e.target === customRateModal) closeCustomRateConverter();
-    });
-  }
-  if (customRateInput) {
-    customRateInput.addEventListener('input', updateCustomRateResult);
-  }
-  if (customAmountInput) {
-    customAmountInput.addEventListener('input', updateCustomRateResult);
-  }
-  if (customRateSpeakButton) {
-    customRateSpeakButton.addEventListener('click', () => {
-      triggerButtonFeedback();
-      speakCustomRateResult();
-    });
-  }
   if (showFavoritesButton) {
     showFavoritesButton.addEventListener('click', showFavoritesList);
   }
@@ -3480,19 +2844,15 @@ function wireEvents() {
   }
   if (refreshRatesButton) {
     refreshRatesButton.addEventListener('click', async () => {
-      // Refresh: clear the entered amount, result and words, stop any ongoing
-      // speech, keep the screen open and keep the currently selected currencies.
-      stopCurrencySpeech();
-      resetCurrencyConverter();
-      const spinIcon = refreshRatesButton.querySelector('.fa-rotate');
-      if (spinIcon) spinIcon.classList.add('spinning');
+      setCurrencyStatus('Updating rates...');
       try {
         await fetchCurrencyRates();
+        setCurrencyStatus('Rates updated');
+        if (cacheIndicator) cacheIndicator.style.display = 'none';
         updateConverterOutput();
       } catch (e) {
-        // Rates failed to update; the converter keeps working with cached data.
+        setCurrencyStatus('Failed to update rates', true);
       }
-      if (spinIcon) setTimeout(() => spinIcon.classList.remove('spinning'), 700);
     });
   }
   if (marketRateInput) {
@@ -3534,69 +2894,6 @@ function wireEvents() {
       }
     });
   }
-
-  // Currency Rates screen
-  if (currencyRatesBackButton) {
-    currencyRatesBackButton.addEventListener('click', closeCurrencyRates);
-  }
-  if (currencyRatesCloseButton) {
-    currencyRatesCloseButton.addEventListener('click', closeCurrencyRates);
-  }
-  if (currencyRatesModal) {
-    currencyRatesModal.addEventListener('click', (e) => {
-      if (e.target === currencyRatesModal) closeCurrencyRates();
-    });
-  }
-  if (currencyRatesSearchInput) {
-    currencyRatesSearchInput.addEventListener('input', renderCurrencyRates);
-  }
-  if (currencyRatesList) {
-    currencyRatesList.addEventListener('click', (e) => {
-      const favBtn = e.target.closest('.currency-rates-fav');
-      if (favBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        const code = favBtn.getAttribute('data-code');
-        if (currencyServiceInstance && code) {
-          if (currencyServiceInstance.isFavorite(code)) {
-            currencyServiceInstance.removeFromFavorites(code);
-          } else {
-            currencyServiceInstance.addToFavorites(code);
-          }
-          renderCurrencyRates();
-        }
-      }
-    });
-  }
-
-  // Currency Favorites screen
-  if (currencyFavoritesBackButton) {
-    currencyFavoritesBackButton.addEventListener('click', closeCurrencyFavorites);
-  }
-  if (currencyFavoritesModal) {
-    currencyFavoritesModal.addEventListener('click', (e) => {
-      if (e.target === currencyFavoritesModal) closeCurrencyFavorites();
-    });
-  }
-  if (currencyFavoritesList) {
-    currencyFavoritesList.addEventListener('click', (e) => {
-      const favBtn = e.target.closest('.currency-favorites-fav');
-      if (favBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        const code = favBtn.getAttribute('data-code');
-        if (currencyServiceInstance && code) {
-          if (currencyServiceInstance.isFavorite(code)) {
-            currencyServiceInstance.removeFromFavorites(code);
-          } else {
-            currencyServiceInstance.addToFavorites(code);
-          }
-          renderCurrencyFavorites();
-        }
-      }
-    });
-  }
-
 
   // Keyboard
   document.addEventListener('keydown', handleKeydown);

@@ -8,8 +8,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="description" content="Advanced EQ Calculator with precision math, word conversion, history, and PWA support." />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="EQ Calculator" />
-    <title>EQ Calculator</title>
+    <meta name="application-name" content="EQ" />
+    <title>EQ</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
@@ -24,8 +24,7 @@
 
       <header class="top-bar">
         <div>
-          <p class="eyebrow" data-i18n="eyebrow">Precision Calculator</p>
-          <h1 data-i18n="title">EQ Calculator</h1>
+          <h1 class="app-logo" dir="ltr"><span class="logo-e">E</span><span class="logo-q">Q</span></h1>
         </div>
         <div class="top-bar-actions">
           <select id="topBarLanguageSelect" class="lang-switch" aria-label="Select language">
@@ -37,6 +36,25 @@
             <option value="de" data-i18n="languageGerman">Deutsch</option>
             <option value="tr" data-i18n="languageTurkish">Türkçe</option>
           </select>
+          <div id="currencyMenuWrap" class="currency-menu-wrap">
+            <button id="currencyMenuButton" class="ghost-btn icon-btn" type="button" aria-label="Currency Menu" aria-expanded="false">
+              <i class="fa-solid fa-coins"></i>
+            </button>
+            <div id="currencyMenuPopover" class="currency-popover" aria-hidden="true">
+              <button class="currency-popover-item" data-action="search" type="button">
+                <span data-i18n="currencyOptionSearch">Search Currency</span>
+              </button>
+              <button class="currency-popover-item" data-action="prices" type="button">
+                <span data-i18n="currencyOptionPrices">Live Currency Prices</span>
+              </button>
+              <button class="currency-popover-item" data-action="customRate" type="button">
+                <span data-i18n="currencyOptionCustomRate">Convert at Custom Rate</span>
+              </button>
+              <button class="currency-popover-item" data-action="favorites" type="button">
+                <span data-i18n="currencyOptionFavorites">Favorite Currencies</span>
+              </button>
+            </div>
+          </div>
           <button id="drawerToggle" class="ghost-btn icon-btn" type="button" aria-label="Open EQ Tools">
             <i class="fa-solid fa-bars"></i>
           </button>
@@ -55,6 +73,31 @@
             <div id="expressionDisplay" class="expression-display" aria-live="polite"></div>
             <div id="secondaryDisplay" class="secondary-display">Zero</div>
           </section>
+
+          <div id="percentPanel" class="percent-panel" aria-hidden="true">
+            <div class="percent-panel-header">
+              <h4 data-i18n="percentTitle">Percentage Calculator</h4>
+              <div class="percent-header-actions">
+                <button id="percentRefreshButton" class="percent-refresh-btn" type="button" aria-label="Refresh percentage calculator">
+                  <i class="fa-solid fa-rotate"></i>
+                </button>
+                <button id="percentBackButton" class="percent-back-btn" type="button" aria-label="Back to calculator">
+                  <i class="fa-solid fa-arrow-left"></i>
+                  <span data-i18n="percentBack">Back</span>
+                </button>
+              </div>
+            </div>
+            <div class="percent-panel-body">
+              <label class="field">
+                <span data-i18n="amountLabel">Amount</span>
+                <input id="percentAmount" type="number" inputmode="decimal" placeholder="0" />
+              </label>
+              <label class="field">
+                <span data-i18n="rateLabel">Percentage Rate</span>
+                <input id="percentRate" type="number" inputmode="decimal" placeholder="0" />
+              </label>
+            </div>
+          </div>
 
           <div class="scientific-toggle-row">
             <button id="scientificToggle" class="scientific-toggle" type="button" aria-expanded="false" data-i18n="scientificToggle">Scientific</button>
@@ -96,31 +139,6 @@
               <button class="keypad-btn operator" data-value="/" type="button">÷</button>
               <button class="keypad-btn equals" data-action="equals" type="button">=</button>
             </section>
-
-            <div id="percentPanel" class="percent-panel" aria-hidden="true">
-              <div class="percent-panel-header">
-                <h4 data-i18n="percentTitle">Percentage Calculator</h4>
-                <button id="percentBackButton" class="percent-back-btn" type="button" aria-label="Back to calculator">
-                  <i class="fa-solid fa-arrow-left"></i>
-                  <span data-i18n="percentBack">Back</span>
-                </button>
-              </div>
-              <div class="percent-panel-body">
-                <label class="field">
-                  <span data-i18n="amountLabel">Amount</span>
-                  <input id="percentAmount" type="number" inputmode="decimal" placeholder="0" />
-                </label>
-                <label class="field">
-                  <span data-i18n="rateLabel">Percentage Rate</span>
-                  <input id="percentRate" type="number" inputmode="decimal" placeholder="0" />
-                </label>
-                <div class="field percent-result-field">
-                  <span data-i18n="percentResultLabel">Result</span>
-                  <div id="percentResult" class="percent-result-value">0</div>
-                </div>
-                <div id="percentWords" class="percent-words"></div>
-              </div>
-            </div>
           </div>
         </main>
       </div>
@@ -143,90 +161,103 @@
       </div>
 
     <div id="currencyConverterModal" class="currency-modal-backdrop" aria-hidden="true">
-      <div class="currency-modal" role="dialog" aria-modal="true" aria-labelledby="currencyConverterTitle">
-        <div class="currency-modal-header">
-          <div>
-            <h3 id="currencyConverterTitle" data-i18n="currencyConverterTitle">Direct Currency Converter</h3>
-            <p class="currency-modal-subtitle" data-i18n="currencyConverterSubtitle">Convert amounts instantly with live rates.</p>
+      <div class="currency-modal currency-converter-modal" role="dialog" aria-modal="true" aria-labelledby="currencyConverterTitle">
+        <header class="currency-converter-header">
+          <button id="currencyConverterCloseButton" class="currency-converter-icon-btn currency-converter-back" type="button" aria-label="Back" title="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h3 id="currencyConverterTitle" class="currency-converter-title" data-i18n="currencyConverterTitle">Convert Currencies</h3>
+          <button id="refreshRatesButton" class="currency-converter-icon-btn currency-converter-refresh" type="button" aria-label="Refresh rates" title="Refresh rates">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </header>
+
+        <div class="converter-card">
+          <div class="converter-card-strip">
+            <span id="converterFromFlag" class="converter-flag"></span>
+            <span id="converterFromLabel" class="converter-label"></span>
+            <span class="converter-strip-spacer"></span>
+            <i class="fa-solid fa-chevron-down converter-chevron" aria-hidden="true"></i>
+            <select id="currencyFromSelect" class="converter-strip-select" aria-label="From currency"></select>
+            <button id="favoriteFromButton" class="converter-fav-btn" type="button" aria-label="Add to favorites">
+              <i class="fa-regular fa-star"></i>
+            </button>
           </div>
-          <button id="currencyConverterCloseButton" class="modal-close-btn" type="button" aria-label="Close">×</button>
+          <label class="converter-amount-field">
+            <input id="currencyFromAmount" class="converter-amount-input" type="number" inputmode="decimal" placeholder="100" aria-label="Amount" />
+          </label>
         </div>
 
-        <div class="converter-mode-switcher" role="tablist" aria-label="Converter mode">
-          <button type="button" class="converter-mode-btn active" data-converter-mode="bank" data-i18n="bankRateMode">🏦 Bank Rate</button>
-          <button type="button" class="converter-mode-btn" data-converter-mode="market" data-i18n="marketRateMode">🏪 Market Rate</button>
+        <div class="converter-swap-row">
+          <button id="swapCurrenciesButton" class="converter-swap-btn" type="button" title="Swap currencies" aria-label="Swap currencies">
+            <i class="fa-solid fa-right-left"></i>
+          </button>
         </div>
 
-        <label class="field converter-field market-rate-field" id="marketRateField" hidden>
-          <span data-i18n="marketRateFieldLabel">Market Exchange Rate</span>
-          <div class="market-rate-row">
-            <span id="marketRatePrefix" class="market-rate-prefix">1 USD =</span>
-            <input id="marketRateInput" type="number" inputmode="decimal" placeholder="0" />
-            <span id="marketRateSuffix" class="market-rate-suffix">IQD</span>
+        <div class="converter-card">
+          <div class="converter-card-strip">
+            <span id="converterToFlag" class="converter-flag"></span>
+            <span id="converterToLabel" class="converter-label"></span>
+            <span class="converter-strip-spacer"></span>
+            <i class="fa-solid fa-chevron-down converter-chevron" aria-hidden="true"></i>
+            <select id="currencyToSelect" class="converter-strip-select" aria-label="To currency"></select>
+            <button id="favoriteToButton" class="converter-fav-btn" type="button" aria-label="Add to favorites">
+              <i class="fa-regular fa-star"></i>
+            </button>
           </div>
-        </label>
-
-        <div class="currency-quick-actions">
-          <button id="swapCurrenciesButton" class="ghost-btn small" type="button" title="Swap currencies" data-i18n="swapButton">
-            <i class="fa-solid fa-arrow-right-arrow-left"></i> Swap
-          </button>
-          <button id="showFavoritesButton" class="ghost-btn small" type="button" title="Show favorites" data-i18n="favoritesButton">
-            <i class="fa-solid fa-star"></i> Favorites
-          </button>
-          <button id="showRecentButton" class="ghost-btn small" type="button" title="Show recent" data-i18n="recentButton">
-            <i class="fa-solid fa-clock"></i> Recent
-          </button>
-        </div>
-
-        <div class="converter-grid">
-          <label class="field converter-field">
-            <span data-i18n="fromLabel">From</span>
-            <div class="currency-select-wrapper">
-              <select id="currencyFromSelect"></select>
-              <button id="favoriteFromButton" class="favorite-btn" type="button" aria-label="Add to favorites">
-                <i class="fa-regular fa-star"></i>
+          <div class="converter-card-output">
+            <div class="converter-output-row">
+              <div id="currencyToAmount" class="converter-output">0</div>
+              <button id="currencySpeakButton" class="converter-speak-btn" type="button" aria-label="Speak result" title="Speak result">
+                <i class="fa-solid fa-volume-high"></i>
               </button>
             </div>
-          </label>
-          <label class="field converter-field">
-            <span data-i18n="toLabel">To</span>
-            <div class="currency-select-wrapper">
-              <select id="currencyToSelect"></select>
-              <button id="favoriteToButton" class="favorite-btn" type="button" aria-label="Add to favorites">
-                <i class="fa-regular fa-star"></i>
-              </button>
-            </div>
-          </label>
-          <label class="field converter-field amount-field">
-            <span data-i18n="amountLabel">Amount</span>
-            <input id="currencyFromAmount" type="number" inputmode="decimal" placeholder="0" />
-          </label>
-          <div class="field converter-result-field">
-            <span data-i18n="convertedLabel">Converted</span>
-            <div id="currencyToAmount" class="converter-output">0</div>
-            <div id="conversionRateDisplay" class="conversion-rate"></div>
             <div id="currencyWords" class="currency-words"></div>
-          </div>
-        </div>
-        
-        <div class="currency-status-row">
-          <div id="currencyStatusMessage" class="currency-status">Loading rates…</div>
-          <div id="cacheIndicator" class="cache-indicator" style="display: none;">
-            <i class="fa-solid fa-database"></i> <span data-i18n="cachedLabel">Cached</span>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="refreshRatesButton" class="ghost-btn small" type="button" data-i18n="refreshButton">
-              <i class="fa-solid fa-rotate"></i>
-              Refresh
-            </button>
-            <button id="currencyDirectoryButton" class="ghost-btn small" type="button" data-i18n="globalDirectoryButton">
-              <i class="fa-solid fa-globe"></i>
-              Global directory
-            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <div id="customRateModal" class="currency-modal-backdrop" aria-hidden="true">
+      <div class="currency-modal currency-converter-modal custom-rate-modal" role="dialog" aria-modal="true" aria-labelledby="customRateTitle">
+        <header class="currency-converter-header">
+          <button id="customRateBackButton" class="currency-converter-icon-btn currency-converter-back" type="button" aria-label="Back" title="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h3 id="customRateTitle" class="currency-converter-title" data-i18n="customRateTitle">Convert at Custom Rate</h3>
+          <button id="customRateResetButton" class="currency-converter-icon-btn currency-converter-refresh" type="button" aria-label="Reset" title="Reset">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </header>
+
+        <div class="converter-card">
+          <label class="converter-amount-field">
+            <span class="custom-rate-field-label" data-i18n="customRateFieldLabel">Exchange Rate</span>
+            <input id="customRateInput" class="converter-amount-input" type="number" inputmode="decimal" placeholder="0" aria-label="Exchange rate" />
+          </label>
+        </div>
+
+        <div class="converter-card">
+          <label class="converter-amount-field">
+            <span class="custom-rate-field-label" data-i18n="amountLabel">Amount</span>
+            <input id="customAmountInput" class="converter-amount-input" type="number" inputmode="decimal" placeholder="0" aria-label="Amount" />
+          </label>
+        </div>
+
+        <div class="converter-card">
+          <div class="converter-card-output">
+            <div class="converter-output-row">
+              <div id="customRateResult" class="converter-output">0</div>
+              <button id="customRateSpeakButton" class="converter-speak-btn" type="button" aria-label="Speak result" title="Speak result">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+            <div id="customRateWords" class="currency-words"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <div id="currencyDirectoryModal" class="currency-modal-backdrop" aria-hidden="true">
       <div class="currency-modal" role="dialog" aria-modal="true" aria-labelledby="currencyDirectoryTitle">
@@ -242,6 +273,45 @@
             <input id="currencySearchInput" type="search" placeholder="Search country or code" data-i18n-placeholder="currencySearchPlaceholder" autocomplete="off" />
           </label>
           <ul id="currencyList" class="currency-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="currencyRatesModal" class="currency-modal-backdrop" aria-hidden="true">
+      <div class="currency-modal currency-rates-modal" role="dialog" aria-modal="true" aria-labelledby="currencyRatesTitle">
+        <header class="currency-rates-header">
+          <button id="currencyRatesBackButton" class="currency-rates-back-btn" type="button" aria-label="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h3 id="currencyRatesTitle" class="currency-rates-title" data-i18n="currencyRatesTitle">Currency Rates</h3>
+          <button id="currencyRatesCloseButton" class="modal-close-btn" type="button" aria-label="Close">×</button>
+        </header>
+        <div class="currency-rates-body">
+          <label class="field currency-search-field">
+            <input id="currencyRatesSearchInput" type="search" placeholder="Search currency or code" data-i18n-placeholder="currencyRatesSearchPlaceholder" autocomplete="off" />
+          </label>
+          <div id="currencyRatesStatus" class="currency-rates-status" hidden></div>
+          <ul id="currencyRatesList" class="currency-list currency-rates-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="currencyFavoritesModal" class="currency-modal-backdrop" aria-hidden="true">
+      <div class="currency-modal currency-favorites-modal" role="dialog" aria-modal="true" aria-labelledby="currencyFavoritesTitle">
+        <header class="currency-favorites-header">
+          <button id="currencyFavoritesBackButton" class="currency-favorites-back-btn" type="button" aria-label="Back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h3 id="currencyFavoritesTitle" class="currency-favorites-title" data-i18n="currencyFavoritesTitle">Favorites</h3>
+        </header>
+        <div class="currency-favorites-body">
+          <div id="currencyFavoritesStatus" class="currency-favorites-status" hidden></div>
+          <div id="currencyFavoritesEmpty" class="currency-favorites-empty" hidden>
+            <span class="currency-favorites-empty-icon"><i class="fa-regular fa-star"></i></span>
+            <p class="currency-favorites-empty-text" data-i18n="currencyFavoritesEmpty">No favorite currencies yet</p>
+            <span class="currency-favorites-empty-hint" data-i18n="currencyFavoritesEmptyHint">Tap the star on any currency to add it here</span>
+          </div>
+          <ul id="currencyFavoritesList" class="currency-list currency-favorites-list"></ul>
         </div>
       </div>
     </div>
@@ -364,8 +434,7 @@
     <aside id="drawer" class="drawer side" aria-label="EQ tools drawer">
       <div class="drawer-header">
         <div>
-          <p class="eyebrow" data-i18n="drawerEyebrow">EQ TOOLS</p>
-          <h2 data-i18n="drawerTitle">EQ Tools</h2>
+          <h2 class="app-logo" dir="ltr"><span class="logo-e">E</span><span class="logo-q">Q</span></h2>
         </div>
         <button id="drawerCloseButton" class="modal-close-btn" type="button" aria-label="Close drawer">×</button>
       </div>
@@ -377,14 +446,6 @@
         <button class="drawer-menu-item" data-action="open-notes" type="button">
           <span class="item-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
           <span data-i18n="drawerNotes">Notes</span>
-        </button>
-        <button class="drawer-menu-item" data-action="open-converter" type="button">
-          <span class="item-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span>
-          <span data-i18n="drawerConverter">Direct Currency Converter</span>
-        </button>
-        <button class="drawer-menu-item" data-action="open-directory" type="button">
-          <span class="item-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
-          <span data-i18n="drawerDirectory">Global Currency Directory & Search</span>
         </button>
         <button class="drawer-menu-item" data-action="open-install" type="button">
           <span class="item-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></span>
