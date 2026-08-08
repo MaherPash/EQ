@@ -3171,6 +3171,30 @@ body[data-language='ar'] .notes-list-panel.hidden {
   transform: scale(0.96);
 }
 
+/* --- Notes Save (✓) Button --- */
+.notes-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.18s ease, transform 0.15s ease, background 0.18s ease;
+}
+
+.notes-save-btn:hover {
+  opacity: 0.9;
+}
+
+.notes-save-btn:active {
+  transform: scale(0.92);
+}
+
 /* --- Full Screen Body --- */
 .full-screen-note-body {
   flex: 1;
@@ -3315,6 +3339,7 @@ body[data-language='ar'] .note-item-meta {
   .notes-nav-btn,
   .folder-tab,
   .notes-done-btn,
+  .notes-save-btn,
   .note-delete-float-btn,
   .notes-empty-btn {
     transition-duration: 0.01ms !important;

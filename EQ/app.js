@@ -2067,7 +2067,10 @@ function closeFullScreenNote() {
   if (fullScreenNoteModal) {
     fullScreenNoteModal.classList.remove('show');
     fullScreenNoteModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
+    // Keep the body locked while the Notes manager is still open beneath the editor.
+    if (!notesManagerModal || !notesManagerModal.classList.contains('show')) {
+      document.body.classList.remove('modal-open');
+    }
   }
 }
 
@@ -3593,8 +3596,9 @@ function wireEvents() {
   }
   if (openNewNoteButton) {
     openNewNoteButton.addEventListener('click', () => {
-      closeNotesManager();
-      setTimeout(() => openFullScreenNote(null), 250);
+      // Open the editor on top of the notes manager so that after saving
+      // the user returns to the Folders / Notes list automatically.
+      openFullScreenNote(null);
     });
   }
   if (emptyNewNoteBtn) {
