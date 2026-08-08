@@ -1438,6 +1438,7 @@ function updatePercentPanel() {
     return;
   }
   const result = (amount * rate) / 100;
+  state.displayValue = String(result);
   if (sharedServices.display) {
     sharedServices.display.updatePrimary(result);
     sharedServices.display.updateSecondary(result, state.locale);
@@ -1456,6 +1457,9 @@ function setPercentPanelOpen(open) {
   }
   if (percentToggle) {
     percentToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  if (keypadGrid) {
+    keypadGrid.classList.toggle('percent-open', open);
   }
   if (open) {
     updatePercentPanel();
