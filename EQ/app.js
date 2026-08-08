@@ -1418,12 +1418,40 @@ async function pasteNumber(userInitiated = false) {
 // ============================================================
 // SPEECH
 // ============================================================
+// Tracks whether the main calculator is currently reading aloud so that the
+// same speaker button acts as a toggle: first press starts, second press stops
+// immediately, and a later press reads again from the start.
+let speechActive = false;
+
+function stopCurrentSpeech() {
+  try {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  } catch (e) {
+    // no-op
+  }
+  speechActive = false;
+}
+
 function speakCurrentResult() {
   try {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    const text = `${state.displayValue}`;
+    // Toggle: if currently reading, stop immediately.
+    if (speechActive) {
+      stopCurrentSpeech();
+      return;
+    }
+    // Arabic speech: speak the number as words so the TTS does not read the
+    // decimal separator as "نقطة". The on-screen display stays unchanged.
+    const text = state.locale === 'ar' && !Number.isNaN(Number(state.displayValue))
+      ? numberToWords(state.displayValue, 'ar')
+      : `${state.displayValue}`;
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = state.locale === 'ar' ? 'ar-SA' : state.locale === 'es' ? 'es-ES' : state.locale === 'fr' ? 'fr-FR' : state.locale === 'ru' ? 'ru-RU' : state.locale === 'de' ? 'de-DE' : state.locale === 'tr' ? 'tr-TR' : 'en-US';
+    utterance.onstart = () => { speechActive = true; };
+    utterance.onend = () => { speechActive = false; };
+    utterance.onerror = () => { speechActive = false; };
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   } catch (e) {
