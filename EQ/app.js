@@ -2422,8 +2422,7 @@ function formatCleanNumber(value) {
   if (isNaN(num)) return '0';
   if (!isFinite(num)) return String(num);
   // Use 15 significant digits to round away floating-point artifacts
-  // (e.g. 70.89999999999999 -> 70.9, 98.73060649000001 -> 98.73060649)
-  // while preserving all meaningful precision for small values.
+  // while preserving meaningful precision for display.
   let cleaned;
   try {
     cleaned = num.toPrecision(15);
@@ -2432,10 +2431,16 @@ function formatCleanNumber(value) {
   }
   // Expand scientific notation to a plain decimal string
   cleaned = expandScientific(cleaned);
+  // Limit display to a maximum of 6 decimal places for converter output
+  let rounded = Number(cleaned).toFixed(6);
+  if (rounded === 'NaN') {
+    rounded = cleaned;
+  }
+  rounded = expandScientific(rounded);
   // Trim trailing zeros (and trailing decimal point)
-  cleaned = cleaned.replace(/\.?0+$/, '');
+  rounded = rounded.replace(/\.?0+$/, '');
   // Add thousands separators
-  return formatNumber(cleaned);
+  return formatNumber(rounded);
 }
 
 // Update the flag + label shown on the From/To currency strips based on the
