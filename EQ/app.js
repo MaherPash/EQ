@@ -2079,11 +2079,15 @@ function stopCurrentSpeech() {
   speechActive = false;
 }
 
-function speakCurrentResult() {
+function speakCurrentResult(force = false) {
   try {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    // Toggle: if currently reading, stop immediately.
-    if (speechActive) {
+    // Toggle: if currently reading, stop immediately. The manual speaker
+    // button (no `force`) toggles read/stop as before. The automatic on-`=`
+    // read (force=true) must ALWAYS speak the new result, not let the manual
+    // button's speechActive state swallow it — keeping the Settings Speaker
+    // toggle and the calculator's speakerEnabled on a single read path.
+    if (!force && speechActive) {
       stopCurrentSpeech();
       return;
     }
@@ -3107,8 +3111,9 @@ function formatCleanNumber(value) {
   }
   // Expand scientific notation to a plain decimal string
   cleaned = expandScientific(cleaned);
-  // Limit display to a maximum of 6 decimal places for converter output
-  let rounded = Number(cleaned).toFixed(6);
+  // Limit display to a maximum of 2 decimal places for converter output,
+  // showing no decimals for whole numbers (trailing zeros are trimmed below).
+  let rounded = Number(cleaned).toFixed(2);
   if (rounded === 'NaN') {
     rounded = cleaned;
   }
@@ -3191,9 +3196,14 @@ function updateConverterOutput() {
   if (currencyWords && result !== 0) {
     const toCur = toCode ? currencyServiceInstance.getCurrencyByCode(toCode) : null;
     const currencyName = toCur ? getLocalizedCurrencyName(toCur) : '';
+    // numberToWords expects a plain decimal string, but the on-screen
+    // displayResult contains thousands separators (e.g. "1,250.5") which the
+    // engine cannot parse (it returns "invalid number"). Strip the commas so
+    // the words match the visible number exactly, without changing it.
+    const wordsValue = displayResult.replace(/,/g, '');
     currencyWords.textContent = currencyName
-      ? `${numberToWords(displayResult, state.locale)} ${currencyName}`
-      : numberToWords(displayResult, state.locale);
+      ? `${numberToWords(wordsValue, state.locale)} ${currencyName}`
+      : numberToWords(wordsValue, state.locale);
   } else if (currencyWords) {
     currencyWords.textContent = '';
   }
@@ -4706,7 +4716,7 @@ function initialize() {
   // Preserve the app's history, speech and error/toast integrations exactly by
   // delegating their side-effects back to the existing app functions.
   standardCalculator.onAddHistory = addHistory;
-  standardCalculator.onSpeak = speakCurrentResult;
+  standardCalculator.onSpeak = () => speakCurrentResult(true);
   standardCalculator.onError = () => showToast('Error');
   calculatorManager.registerMode('general', standardCalculator);
   calculatorManager.bindModeSwitchButtons((modeName) => {
